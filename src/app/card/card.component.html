@@ -1,14 +1,13 @@
-<mat-progress-bar class="progress-bar" mode="determinate" value="20"></mat-progress-bar>
+<mat-progress-bar class="progress-bar" mode="determinate" [value]="progress"></mat-progress-bar>
 <div>
   <h1 class="text-center text-3xl font-bold underline mb-[5rem]">
 <!--    Wybierz na co masz ochote!-->
   </h1>
 
   <div class="grid grid-cols-4 gap-[1.4rem]">
-    <div class="card" (click)="selectCard(question)"></div>
-    <div class="card" (click)="selectCard(question)"></div>
-    <div class="card" (click)="selectCard(question)"></div>
-    <div class="card" (click)="selectCard(question)"></div>
+    <div class="card" *ngFor="let option of currentQuestion.options" (click)="selectCard(option)">
+      {{ option }}
+    </div>
   </div>
 
 </div>
