@@ -20,8 +20,8 @@ export class AppComponent implements OnInit {
   constructor(private restaurantsService: RestaurantsService) {
   }
   ngOnInit() {
-    this.restaurantsService.getRestaurants().subscribe((value) => {
-      console.log(value)
-    })
+    // this.restaurantsService.getRestaurants().subscribe((value) => {
+    //   console.log(value)
+    // })
   }
 }

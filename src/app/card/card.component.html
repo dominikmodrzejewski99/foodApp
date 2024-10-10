@@ -5,9 +5,9 @@
   </h1>
 
   <div class="grid grid-cols-4 gap-[1.4rem]">
-    <div class="card" *ngFor="let option of currentQuestion.options" (click)="selectCard(option)">
+    <<div class="card" *ngFor="let option of questions[currentQuestionIndex].options" (click)="selectCard(option)">
       {{ option }}
-    </div>
+  </div>
   </div>
 
 </div>
