@@ -1,3 +1,6 @@
-
-<app-background></app-background>
-
+<div>
+  Current Count: {{ progress$ | async }}
+  <button (click)="increment()">Increment</button>
+  <button (click)="decrement()">Decrement</button>
+  <button (click)="reset()">Reset</button>
+</div>
