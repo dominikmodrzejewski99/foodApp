@@ -6,14 +6,18 @@ import { AppComponent } from './app.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import {progresReducer} from "../store/progress.reducer";
+import { RestaurantListComponent } from './components/restaurant-list/restaurant-list.component';
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RestaurantListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     StoreModule.forRoot({progress: progresReducer}, {}),
     EffectsModule.forRoot([])
   ],
