@@ -8,18 +8,24 @@ import { EffectsModule } from '@ngrx/effects';
 import {progresReducer} from "../store/progress.reducer";
 import { RestaurantListComponent } from './components/restaurant-list/restaurant-list.component';
 import {HttpClientModule} from "@angular/common/http";
+import { CardsComponent } from './components/cards/cards.component';
+import {Button} from "primeng/button";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
     AppComponent,
-    RestaurantListComponent
+    RestaurantListComponent,
+    CardsComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     StoreModule.forRoot({progress: progresReducer}, {}),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    Button
   ],
   providers: [
     provideClientHydration()
