@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import {StoreModule} from "@ngrx/store";
-import {counterReducer} from "./store/card.reducer";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {
@@ -16,6 +15,8 @@ import {
   MatCardImage, MatCardSubtitle,
   MatCardTitle
 } from "@angular/material/card";
+import {counterReducer} from "./store/reducers/card.reducer";
+import {CoreModule} from "./core/core.module";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {
     MatCardActions,
     MatCardTitle,
     MatCardSubtitle,
-    MatCardImage
+    MatCardImage,
+    CoreModule
   ],
   providers: [
     provideClientHydration(),

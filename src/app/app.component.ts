@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from "@ngrx/store";
-import { increment} from './store/card.actions';
+import { increment} from './store/actions/card.actions';
 
 
 @Component({
