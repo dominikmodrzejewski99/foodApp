@@ -17,6 +17,9 @@ import {
 } from "@angular/material/card";
 import {counterReducer} from "./store/reducers/card.reducer";
 import {CoreModule} from "./core/core.module";
+import {CardsComponent} from "./features/cards/cards.component";
+import {ButtonModule} from "primeng/button";
+import {TableModule} from "primeng/table";
 
 @NgModule({
   declarations: [
@@ -35,7 +38,11 @@ import {CoreModule} from "./core/core.module";
     MatCardTitle,
     MatCardSubtitle,
     MatCardImage,
-    CoreModule
+    CoreModule,
+    ButtonModule,
+    TableModule,
+    CardsComponent,
+    CardsComponent
   ],
   providers: [
     provideClientHydration(),
