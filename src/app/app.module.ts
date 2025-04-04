@@ -1,11 +1,16 @@
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 
+
+
+
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config'; import Aura from '@primeng/themes/aura';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import {StoreModule} from "@ngrx/store";
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {MatProgressBar} from "@angular/material/progress-bar";
 import {
   MatCard,
@@ -46,8 +51,15 @@ import {TableModule} from "primeng/table";
   ],
   providers: [
     provideClientHydration(),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: Aura,
+      },
+    }),
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+
