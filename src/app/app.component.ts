@@ -4,9 +4,10 @@ import { increment} from './store/card.actions';
 
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss',
+    standalone: false
 })
 export class AppComponent implements OnInit{
   counter$ = this.store.select('counter');
