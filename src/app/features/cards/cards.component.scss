@@ -1,0 +1,31 @@
+:host {
+  display: block;
+  padding: 1rem;
+}
+
+p-card {
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.error-message {
+  margin-bottom: 1rem;
+
+  ::ng-deep .p-card-red .p-card-header {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+
+  ::ng-deep .p-card-red .p-card-content {
+    background-color: #fff5f5;
+  }
+}
