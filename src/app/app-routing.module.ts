@@ -4,7 +4,7 @@ import { RestaurantListComponent } from './features/restaurants/restaurant-list/
 import { RestaurantRecommendationsComponent } from './features/restaurants/restaurant-recommendations/restaurant-recommendations.component';
 import { CardsComponent } from './features/cards/cards.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', redirectTo: '/cards', pathMatch: 'full' },
   { path: 'cards', component: CardsComponent },
   { path: 'restaurants', component: RestaurantListComponent },

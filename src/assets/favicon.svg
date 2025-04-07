@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>Głodny? Favicon</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="faviconGradient">
+            <stop stop-color="#4338CA" offset="0%"></stop>
+            <stop stop-color="#3730A3" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <circle fill="url(#faviconGradient)" cx="32" cy="32" r="30"></circle>
+        <g transform="translate(12, 16)" fill="#FFFFFF">
+            <!-- Talerz -->
+            <ellipse cx="20" cy="24" rx="18" ry="5"></ellipse>
+            <path d="M5,24 C5,19 35,19 35,24" stroke="#FFFFFF" stroke-width="1.5" fill="none"></path>
+            
+            <!-- Widelec i nóż -->
+            <path d="M10,4 L10,18 C10,20 12,22 14,22" stroke="#FFFFFF" stroke-width="1.5" fill="none"></path>
+            <path d="M30,4 L30,18 C30,20 28,22 26,22" stroke="#FFFFFF" stroke-width="1.5" fill="none"></path>
+            
+            <!-- Znak zapytania -->
+            <text x="35" y="15" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#FFFFFF">?</text>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>Głodny? Logo</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="logoGradient">
+            <stop stop-color="#4338CA" offset="0%"></stop>
+            <stop stop-color="#3730A3" offset="100%"></stop>
+        </linearGradient>
+        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3"></feGaussianBlur>
+            <feOffset dx="0" dy="2" result="offsetblur"></feOffset>
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.3"></feFuncA>
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <circle fill="url(#logoGradient)" cx="100" cy="100" r="90"></circle>
+        <g transform="translate(40, 60)" fill="#FFFFFF" filter="url(#shadow)">
+            <!-- Talerz -->
+            <ellipse cx="60" cy="70" rx="55" ry="15"></ellipse>
+            <path d="M15,70 C15,55 105,55 105,70" stroke="#FFFFFF" stroke-width="3" fill="none"></path>
+            
+            <!-- Widelec -->
+            <path d="M30,10 L30,50 C30,55 35,60 40,60 C45,60 50,55 50,50 L50,10" stroke="#FFFFFF" stroke-width="3" fill="none"></path>
+            <path d="M30,10 L50,10" stroke="#FFFFFF" stroke-width="3" fill="none"></path>
+            <path d="M30,20 L50,20" stroke="#FFFFFF" stroke-width="3" fill="none"></path>
+            
+            <!-- Nóż -->
+            <path d="M70,10 L70,50 C70,55 75,60 80,60 C85,60 90,55 90,50 L90,10" stroke="#FFFFFF" stroke-width="3" fill="none"></path>
+            <path d="M70,10 L90,10" stroke="#FFFFFF" stroke-width="3" fill="none"></path>
+            
+            <!-- Znak zapytania -->
+            <text x="105" y="40" font-family="Poppins, sans-serif" font-size="50" font-weight="bold" fill="#FFFFFF">?</text>
+        </g>
+    </g>
+</svg>

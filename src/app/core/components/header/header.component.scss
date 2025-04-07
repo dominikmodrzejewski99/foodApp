@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+.app-header {
+  background: linear-gradient(135deg, #4338ca, #3730a3);
+  color: white;
+  padding: 0;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: 'Poppins', sans-serif;
+}
+
+.logo-container {
+  display: none; /* Ukryte na mobilnych urządzeniach, pokazane w menu */
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: white;
+}
+
+.logo-image {
+  height: 40px;
+  margin-right: 0.5rem;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.mobile-logo {
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+:host ::ng-deep {
+  .header-menu {
+    background: transparent;
+    border: none;
+    padding: 0.5rem 1rem;
+    
+    .p-menubar-root-list {
+      background: transparent;
+      
+      .p-menuitem-link {
+        color: white;
+        font-weight: 500;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        transition: background-color 0.2s;
+        
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        &.p-menuitem-link-active {
+          background-color: rgba(255, 255, 255, 0.2);
+          font-weight: 600;
+        }
+        
+        .p-menuitem-icon {
+          color: rgba(255, 255, 255, 0.9);
+          margin-right: 0.5rem;
+        }
+        
+        .p-menuitem-text {
+          color: white;
+        }
+      }
+    }
+    
+    .p-menubar-button {
+      color: white;
+      
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+  
+  .p-button.p-button-text {
+    color: white;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+}
+
+/* Responsywność */
+@media (min-width: 768px) {
+  .logo-container {
+    display: flex;
+  }
+  
+  .mobile-logo {
+    display: none;
+  }
+}
