@@ -1,5 +1,264 @@
-<p-card header="Simple Card">
-  <p class="m-0">
-    Lorem ipsum dolor sit amet...
-  </p>
-</p-card>
+<div class="quiz-container">
+  <!-- Widok quizu z pytaniami -->
+  <div *ngIf="!showResults">
+    <div class="progress-bar-container">
+      <div *ngIf="questions.length > 0" class="progress-bar">
+        <div class="progress" [style.width.%]="(currentQuestionIndex + 1) / questions.length * 100"></div>
+      </div>
+      <div *ngIf="questions.length > 0" class="progress-text">
+        Pytanie {{ currentQuestionIndex + 1 }} z {{ questions.length }}
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="loading-spinner">
+      <div class="spinner"></div>
+      <p>Ładowanie pytań...</p>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      <p-card header="Błąd" styleClass="p-card-red">
+        <p>Błąd pobierania: {{ error || 'Nieznany błąd' }}</p>
+      </p-card>
+    </div>
+
+    <!-- Komunikat, gdy nie ma pytań -->
+    <div *ngIf="!loading && !error && (!questions || questions.length === 0)" class="no-questions">
+      <p-card header="Brak pytań" styleClass="p-card-warning">
+        <p>Nie znaleziono żadnych pytań. Sprawdź połączenie z serwerem lub spróbuj ponownie później.</p>
+      </p-card>
+    </div>
+
+    <div *ngIf="questions.length > 0 && getCurrentQuestion()" class="question-container" @fadeIn>
+      <p-card styleClass="question-card">
+        <ng-template pTemplate="header">
+          <div class="card-header-content">
+            <div class="question-number">Pytanie {{ currentQuestionIndex + 1 }}</div>
+            <h2 class="question-title">{{ getCurrentQuestion()?.question_text }}</h2>
+            <div class="question-subtitle">Wybierz opcję, która najlepiej pasuje do Twoich preferencji</div>
+          </div>
+        </ng-template>
+
+        <div class="answers-section">
+          <h3>Wybierz odpowiedź:</h3>
+
+          <div *ngIf="loading" class="loading-answers">
+            <div class="spinner spinner-small"></div>
+            Ładowanie odpowiedzi...
+          </div>
+
+          <div *ngIf="error" class="error-answers">
+            Nie udało się załadować odpowiedzi.
+          </div>
+
+          <div *ngIf="!loading && !error" class="answer-options">
+            <div *ngIf="filteredAnswers().length === 0" class="no-answers">
+              Brak odpowiedzi dla tego pytania.
+            </div>
+
+            <div *ngFor="let answer of filteredAnswers()"
+                class="answer-option"
+                [class.selected]="isAnswerSelected(answer)"
+                (click)="setSelectedAnswer(answer)"
+                @fadeIn>
+              <div class="answer-radio">
+                <div class="radio-outer">
+                  <div class="radio-inner" *ngIf="isAnswerSelected(answer)"></div>
+                </div>
+              </div>
+              <div class="answer-content">
+                <div class="answer-text">{{ answer.answer_text }}</div>
+                <div class="answer-meta" *ngIf="answer.votes">
+                  <span class="votes">{{ answer.votes }} osób wybrało tę odpowiedź</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="navigation-buttons">
+          <p-button
+            icon="pi pi-arrow-left"
+            [disabled]="currentQuestionIndex === 0"
+            (onClick)="previousQuestion()"
+            styleClass="p-button-text p-button-secondary nav-button prev-button"
+            label="Wstecz"
+          ></p-button>
+
+          <p-button
+            [icon]="currentQuestionIndex < questions.length - 1 ? 'pi pi-arrow-right' : 'pi pi-check-circle'"
+            iconPos="right"
+            [disabled]="!selectedAnswers[currentQuestionIndex]"
+            (onClick)="nextQuestion()"
+            styleClass="p-button-raised nav-button next-button"
+            [ngClass]="{'p-button-success': currentQuestionIndex >= questions.length - 1, 'p-button-primary': currentQuestionIndex < questions.length - 1}"
+            [label]="currentQuestionIndex < questions.length - 1 ? 'Dalej' : 'Zakończ'"
+          ></p-button>
+        </div>
+
+        <div class="question-hint" *ngIf="!selectedAnswers[currentQuestionIndex]">
+          Wybierz jedną z odpowiedzi, aby kontynuować
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Widok rekomendacji -->
+  <div *ngIf="showResults" class="recommendations-container" @fadeIn>
+    <p-card styleClass="recommendations-card">
+      <ng-template pTemplate="header">
+        <div class="card-header-content">
+          <div class="recommendation-title">Twoje rekomendacje</div>
+          <h2 class="recommendation-subtitle">Na podstawie Twoich odpowiedzi, polecamy:</h2>
+        </div>
+      </ng-template>
+
+      <div class="recommendations-content">
+        <!-- Ładowanie restauracji -->
+        <div *ngIf="loading" class="loading-spinner">
+          <div class="spinner"></div>
+          <p>Ładowanie rekomendacji...</p>
+        </div>
+
+        <!-- Błąd ładowania restauracji -->
+        <div *ngIf="error" class="error-message">
+          <p-card header="Błąd" styleClass="p-card-red">
+            <p>Nie udało się załadować rekomendacji. Spróbuj ponownie później.</p>
+          </p-card>
+        </div>
+
+        <!-- Brak rekomendacji -->
+        <div *ngIf="!loading && !error && getRecommendedRestaurants().length === 0" class="no-recommendations">
+          <p-card header="Brak rekomendacji" styleClass="p-card-warning">
+            <p>Nie znaleziono restauracji pasujących do Twoich preferencji. Spróbuj zmienić swoje odpowiedzi.</p>
+          </p-card>
+        </div>
+
+        <!-- Lista rekomendacji -->
+        <div *ngIf="getRecommendedRestaurants().length > 0" class="restaurant-list">
+          <div *ngFor="let restaurant of getRecommendedRestaurants(); let i = index" class="restaurant-item" [class.top-pick]="i === 0" @fadeIn>
+            <div class="restaurant-rank" *ngIf="i === 0">
+              <div class="rank-badge">Najlepszy wybór</div>
+            </div>
+            <div class="restaurant-header">
+              <h3 class="restaurant-name">{{ restaurant.name }}</h3>
+              <div class="restaurant-rating">
+                <span class="rating-value">{{ restaurant.rating || 0 }}/5</span>
+                <div class="rating-stars">
+                  <i class="pi pi-star-fill" *ngFor="let star of [].constructor(restaurant.rating ? Math.floor(restaurant.rating) : 0)"></i>
+                  <i class="pi pi-star" *ngFor="let star of [].constructor(restaurant.rating ? 5 - Math.floor(restaurant.rating) : 5)"></i>
+                </div>
+              </div>
+            </div>
+<!--            <div class="restaurant-details">-->
+<!--              <div class="restaurant-info">-->
+<!--                <div class="info-item">-->
+<!--                  <i class="pi pi-map-marker"></i>-->
+<!--                  <span>{{ restaurant.address }}, {{ restaurant.city }}</span>-->
+<!--                </div>-->
+<!--                <div class="info-item">-->
+<!--                  <i class="pi pi-tag"></i>-->
+<!--                  <span>{{ restaurant.cuisine }}</span>-->
+<!--                </div>-->
+<!--                <div class="info-item" *ngIf="restaurant.price_level">-->
+<!--                  <i class="pi pi-dollar"></i>-->
+<!--                  <span class="price-indicator">-->
+<!--                    <span *ngFor="let i of [1,2,3,4,5]" -->
+<!--                          [ngClass]="{'active': i <= (restaurant.price_level || 0)}">$</span>-->
+<!--                  </span>-->
+<!--                </div>-->
+<!--                <div class="info-item" *ngIf="restaurant.description">-->
+<!--                  <i class="pi pi-info-circle"></i>-->
+<!--                  <span>{{ restaurant.description }}</span>-->
+<!--                </div>-->
+<!--                <div class="info-item" *ngIf="restaurant.is_tiktok_recommended" class="tiktok-badge">-->
+<!--                  <i class="pi pi-fire"></i>-->
+<!--                  <span>Popularne na TikToku</span>-->
+<!--                </div>-->
+<!--                <div class="info-item" *ngIf="restaurant.website">-->
+<!--                  <i class="pi pi-globe"></i>-->
+<!--                  <a [href]="restaurant.website" target="_blank">{{ restaurant.website }}</a>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+          </div>
+        </div>
+
+        <!-- Przycisk do pokazania wszystkich restauracji -->
+        <div class="action-buttons">
+          <p-button
+            *ngIf="!showAllRestaurants"
+            icon="pi pi-list"
+            (onClick)="showAllRestaurants = true"
+            styleClass="p-button-raised p-button-secondary"
+            label="Pokaż wszystkie restauracje"
+          ></p-button>
+
+          <p-button
+            *ngIf="showAllRestaurants"
+            icon="pi pi-times"
+            (onClick)="showAllRestaurants = false"
+            styleClass="p-button-raised p-button-secondary"
+            label="Ukryj wszystkie restauracje"
+          ></p-button>
+
+          <p-button
+            icon="pi pi-refresh"
+            (onClick)="resetQuiz()"
+            styleClass="p-button-raised p-button-primary restart-button"
+            label="Rozpocznij od nowa"
+          ></p-button>
+        </div>
+
+        <!-- Wszystkie restauracje -->
+        <div *ngIf="showAllRestaurants" class="all-restaurants">
+          <h3>Wszystkie restauracje</h3>
+          <div class="restaurant-list">
+            <div *ngFor="let restaurant of restaurants" class="restaurant-item" @fadeIn>
+              <div class="restaurant-header">
+                <h3 class="restaurant-name">{{ restaurant.name }}</h3>
+                <div class="restaurant-rating">
+                  <span class="rating-value">{{ restaurant.rating || 0 }}/5</span>
+                  <div class="rating-stars">
+                    <i class="pi pi-star-fill" *ngFor="let star of [].constructor(restaurant.rating ? Math.floor(restaurant.rating) : 0)"></i>
+                    <i class="pi pi-star" *ngFor="let star of [].constructor(restaurant.rating ? 5 - Math.floor(restaurant.rating) : 5)"></i>
+                  </div>
+                </div>
+              </div>
+<!--              <div class="restaurant-details">-->
+<!--                <div class="restaurant-info">-->
+<!--                  <div class="info-item">-->
+<!--                    <i class="pi pi-map-marker"></i>-->
+<!--                    <span>{{ restaurant.address }}, {{ restaurant.city }}</span>-->
+<!--                  </div>-->
+<!--                  <div class="info-item">-->
+<!--                    <i class="pi pi-tag"></i>-->
+<!--                    <span>{{ restaurant.cuisine }}</span>-->
+<!--                  </div>-->
+<!--                  <div class="info-item" *ngIf="restaurant.price_level">-->
+<!--                    <i class="pi pi-dollar"></i>-->
+<!--                    <span class="price-indicator">-->
+<!--                      <span *ngFor="let i of [1,2,3,4,5]" -->
+<!--                            [ngClass]="{'active': i <= (restaurant.price_level || 0)}">$</span>-->
+<!--                    </span>-->
+<!--                  </div>-->
+<!--                  <div class="info-item" *ngIf="restaurant.description">-->
+<!--                    <i class="pi pi-info-circle"></i>-->
+<!--                    <span>{{ restaurant.description }}</span>-->
+<!--                  </div>-->
+<!--                  <div class="info-item" *ngIf="restaurant.is_tiktok_recommended" class="tiktok-badge">-->
+<!--                    <i class="pi pi-fire"></i>-->
+<!--                    <span>Popularne na TikToku</span>-->
+<!--                  </div>-->
+<!--                  <div class="info-item" *ngIf="restaurant.website">-->
+<!--                    <i class="pi pi-globe"></i>-->
+<!--                    <a [href]="restaurant.website" target="_blank">{{ restaurant.website }}</a>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>

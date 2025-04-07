@@ -25,6 +25,7 @@ import {CoreModule} from "./core/core.module";
 import {CardsComponent} from "./features/cards/cards.component";
 import {ButtonModule} from "primeng/button";
 import {TableModule} from "primeng/table";
+import {provideHttpClient} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {TableModule} from "primeng/table";
     CardsComponent
   ],
   providers: [
+    provideHttpClient(),
     provideClientHydration(),
     provideAnimationsAsync(),
     providePrimeNG({

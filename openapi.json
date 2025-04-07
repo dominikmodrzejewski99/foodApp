@@ -1,0 +1,374 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Food App API Documentation",
+        "description": "API documentation for Food App",
+        "contact": {
+            "name": "Support Team",
+            "email": "support@foodapp.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Food App API Server"
+        }
+    ],
+    "paths": {
+        "/api/questions": {
+            "get": {
+                "tags": [
+                    "Polls"
+                ],
+                "summary": "Get list of questions",
+                "operationId": "caa0baf44bc64c9b94a44e9ed5bc418d",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "question_text": {
+                                                "type": "string",
+                                                "example": "What is your favorite cuisine?"
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/answers": {
+            "get": {
+                "tags": [
+                    "Polls"
+                ],
+                "summary": "Get list of answers",
+                "operationId": "fd2c54c83721116cef0ad4b94134932b",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "question_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "answer_text": {
+                                                "type": "string",
+                                                "example": "Italian"
+                                            },
+                                            "votes": {
+                                                "type": "integer",
+                                                "example": 42
+                                            },
+                                            "created_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            },
+                                            "updated_at": {
+                                                "type": "string",
+                                                "format": "date-time"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/restaurants": {
+            "get": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "summary": "Get list of restaurants",
+                "operationId": "0ef65917394f8eb77311d1d085ff31e4",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Restaurant"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "summary": "Create a new restaurant",
+                "operationId": "938db3c3288b69d111a27774178532ab",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Restaurant"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Restaurant created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Restaurant"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/restaurants/{id}": {
+            "get": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "summary": "Get restaurant by ID",
+                "operationId": "26e68feb8cf848945261ce292866ec2c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Restaurant ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Restaurant"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Restaurant not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "summary": "Update restaurant by ID",
+                "operationId": "ab7fcec28e65e4b5fda3035e61228114",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Restaurant ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Restaurant"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Restaurant updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Restaurant"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Restaurant not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Restaurants"
+                ],
+                "summary": "Delete restaurant by ID",
+                "operationId": "7270982c262ae0c4e547d5eec368e436",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Restaurant ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Restaurant deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Restaurant not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Restaurant": {
+                "required": [
+                    "name",
+                    "address",
+                    "city",
+                    "cuisine"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Restaurant ID",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "Restaurant name",
+                        "type": "string",
+                        "example": "Pizza Palace"
+                    },
+                    "address": {
+                        "description": "Restaurant address",
+                        "type": "string",
+                        "example": "123 Main St"
+                    },
+                    "city": {
+                        "description": "Restaurant city",
+                        "type": "string",
+                        "example": "New York"
+                    },
+                    "cuisine": {
+                        "description": "Restaurant cuisine type",
+                        "type": "string",
+                        "example": "Italian"
+                    },
+                    "rating": {
+                        "description": "Restaurant rating",
+                        "type": "number",
+                        "format": "float",
+                        "example": 4.5
+                    },
+                    "website": {
+                        "description": "Restaurant website",
+                        "type": "string",
+                        "example": "https://pizzapalace.com"
+                    },
+                    "created_at": {
+                        "description": "Creation date",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Last update date",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            },
+            "0": {
+                "sanctum": [],
+              "$ref": ""
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Polls",
+            "description": "API Endpoints for Polls"
+        },
+        {
+            "name": "Restaurants",
+            "description": "API Endpoints for Restaurants"
+        }
+    ]
+}

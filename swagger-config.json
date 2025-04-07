@@ -1,0 +1,10 @@
+{
+  "generateClient": true,
+  "generateRouteTypes": true,
+  "generateResponses": true,
+  "moduleNameFirstTag": true,
+  "enumNamesAsValues": true,
+  "typePrefix": "Api",
+  "fileName": "api.generated.ts",
+  "outputPath": "src/app/core/api"
+}
