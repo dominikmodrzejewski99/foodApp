@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="180px" height="180px" viewBox="0 0 180 180" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>Głodny? Apple Touch Icon</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="appleIconGradient">
+            <stop stop-color="#4338CA" offset="0%"></stop>
+            <stop stop-color="#3730A3" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <rect fill="url(#appleIconGradient)" width="180" height="180" rx="45"></rect>
+        <g transform="translate(35, 50)" fill="#FFFFFF">
+            <!-- Talerz -->
+            <ellipse cx="55" cy="65" rx="50" ry="15"></ellipse>
+            <path d="M15,65 C15,50 95,50 95,65" stroke="#FFFFFF" stroke-width="3" fill="none"></path>
+            
+            <!-- Widelec i nóż -->
+            <path d="M30,10 L30,45 C30,50 35,55 40,55" stroke="#FFFFFF" stroke-width="3" fill="none"></path>
+            <path d="M80,10 L80,45 C80,50 75,55 70,55" stroke="#FFFFFF" stroke-width="3" fill="none"></path>
+            
+            <!-- Znak zapytania -->
+            <text x="95" y="40" font-family="Arial, sans-serif" font-size="45" font-weight="bold" fill="#FFFFFF">?</text>
+        </g>
+    </g>
+</svg>

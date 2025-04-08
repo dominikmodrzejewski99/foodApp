@@ -1,31 +1,34 @@
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
-
-
-
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { providePrimeNG } from 'primeng/config'; import Aura from '@primeng/themes/aura';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeng/themes/aura';
+import { HttpClientModule, provideHttpClient } from "@angular/common/http";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import {StoreModule} from "@ngrx/store";
-import {MatProgressBar} from "@angular/material/progress-bar";
+import { StoreModule } from "@ngrx/store";
+import { MatProgressBar } from "@angular/material/progress-bar";
 import {
   MatCard,
   MatCardActions,
   MatCardContent,
   MatCardHeader,
-  MatCardImage, MatCardSubtitle,
+  MatCardImage,
+  MatCardSubtitle,
   MatCardTitle
 } from "@angular/material/card";
-import {counterReducer} from "./store/reducers/card.reducer";
-import {CoreModule} from "./core/core.module";
-import {CardsComponent} from "./features/cards/cards.component";
-import {ButtonModule} from "primeng/button";
-import {TableModule} from "primeng/table";
-import {provideHttpClient} from "@angular/common/http";
+import { counterReducer } from "./store/reducers/card.reducer";
+import { CoreModule } from "./core/core.module";
+import { ButtonModule } from "primeng/button";
+import { TableModule } from "primeng/table";
+
+// Standalone components
+import { CardsComponent } from "./features/cards/cards.component";
+import { RestaurantRecommendationsComponent } from "./features/restaurants/restaurant-recommendations/restaurant-recommendations.component";
+import { RestaurantListComponent } from "./features/restaurants/restaurant-list/restaurant-list.component";
 
 @NgModule({
   declarations: [
@@ -33,9 +36,13 @@ import {provideHttpClient} from "@angular/common/http";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
     AppRoutingModule,
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
     StoreModule.forRoot({counter: counterReducer}),
+    CoreModule,
+    // Material components
     MatProgressBar,
     MatCard,
     MatCardHeader,
@@ -44,11 +51,13 @@ import {provideHttpClient} from "@angular/common/http";
     MatCardTitle,
     MatCardSubtitle,
     MatCardImage,
-    CoreModule,
+    // PrimeNG components
     ButtonModule,
     TableModule,
+    // Standalone components
     CardsComponent,
-    CardsComponent
+    RestaurantListComponent,
+    RestaurantRecommendationsComponent
   ],
   providers: [
     provideHttpClient(),

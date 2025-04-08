@@ -1,0 +1,81 @@
+<div class="matching-test-container">
+  <h2>Test API dopasowania restauracji</h2>
+  
+  <div class="form-container">
+    <div class="form-group">
+      <label for="answerIds">ID odpowiedzi (oddzielone przecinkami):</label>
+      <input 
+        type="text" 
+        id="answerIds" 
+        [(ngModel)]="answerIdsInput" 
+        placeholder="np. 1, 5, 9, 13, 17"
+        class="form-control">
+    </div>
+    
+    <button (click)="getMatchingRestaurants()" class="btn-primary">
+      Pobierz dopasowane restauracje
+    </button>
+  </div>
+  
+  <div *ngIf="loading" class="loading">
+    <p>Ładowanie dopasowanych restauracji...</p>
+  </div>
+  
+  <div *ngIf="error" class="error-message">
+    <p>{{ error }}</p>
+  </div>
+  
+  <div *ngIf="!loading && !error">
+    <h3>Dopasowane restauracje ({{ restaurants.length }})</h3>
+    
+    <div *ngIf="restaurants.length === 0" class="no-restaurants">
+      <p>Brak dopasowanych restauracji.</p>
+    </div>
+    
+    <div *ngIf="restaurants.length > 0" class="restaurants-grid">
+      <div *ngFor="let restaurant of restaurants; let i = index" class="restaurant-card">
+        <div class="restaurant-header">
+          <h3>{{ restaurant.name }}</h3>
+          <div class="restaurant-rank">
+            #{{ i + 1 }}
+          </div>
+        </div>
+        
+        <div class="restaurant-details">
+          <div *ngIf="restaurant.image_url" class="restaurant-image">
+            <img [src]="restaurant.image_url" [alt]="restaurant.name">
+          </div>
+          
+          <div class="restaurant-info">
+            <p class="match-score" *ngIf="restaurant.match_score !== undefined">
+              <strong>Dopasowanie:</strong> {{ restaurant.match_score }}%
+            </p>
+            <p class="cuisine"><strong>Kuchnia:</strong> {{ restaurant.cuisine }}</p>
+            <p class="address"><strong>Adres:</strong> {{ restaurant.address }}, {{ restaurant.city }}</p>
+            <p class="rating"><strong>Ocena:</strong> {{ restaurant.rating || 0 }}/5</p>
+            
+            <p *ngIf="restaurant.price_level" class="price-level">
+              <strong>Poziom cenowy:</strong>
+              <span class="price-indicator">
+                <span *ngFor="let i of [1,2,3,4,5]" 
+                      [ngClass]="{'active': i <= (restaurant.price_level || 0)}">$</span>
+              </span>
+            </p>
+            
+            <p *ngIf="restaurant.description" class="description">
+              {{ restaurant.description }}
+            </p>
+            
+            <div *ngIf="restaurant.is_tiktok_recommended" class="tiktok-badge">
+              <span class="tiktok-icon">🔥</span> Popularne na TikToku
+            </div>
+          </div>
+        </div>
+        
+        <div class="restaurant-actions" *ngIf="restaurant.website">
+          <a [href]="restaurant.website" target="_blank" class="website-link">Odwiedź stronę</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,26 +1,36 @@
 <header class="app-header">
-  <div class="header-container">
-    <div class="logo-container">
-      <div class="logo">
-        <i class="pi pi-utensils"></i>
+  <div class="container">
+    <div class="header-container">
+      <div class="logo-container">
+        <a routerLink="/" class="logo-link">
+          <div class="logo">
+            <img src="/assets/logo-small-cozjesc.svg" alt="Co zjeść? Logo" class="logo-image">
+          </div>
+          <h1 class="logo-text">Co zjeść?</h1>
+          <span class="location-badge">Wrocław</span>
+          <span class="tagline-badge">Nie wiesz, na co masz ochotę?</span>
+        </a>
       </div>
-      <h1>Food App</h1>
-    </div>
 
-    <nav class="main-nav">
-      <ul>
-        <li><a href="#" class="active"><i class="pi pi-home"></i> Strona główna</a></li>
-        <li><a href="#"><i class="pi pi-map-marker"></i> Restauracje</a></li>
-        <li><a href="#"><i class="pi pi-question-circle"></i> Pytania</a></li>
-        <li><a href="#"><i class="pi pi-info-circle"></i> O nas</a></li>
-      </ul>
-    </nav>
+      <nav class="main-nav">
+        <button class="mobile-menu-toggle" (click)="toggleMobileMenu()">
+          <i class="pi" [ngClass]="{'pi-bars': !mobileMenuOpen, 'pi-times': mobileMenuOpen}"></i>
+        </button>
 
-    <div class="user-actions">
-      <button class="login-btn">
-        <i class="pi pi-user"></i>
-        <span>Zaloguj się</span>
-      </button>
+        <ul [ngClass]="{'mobile-open': mobileMenuOpen}">
+          <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"><i class="pi pi-home"></i> Strona główna</a></li>
+          <li><a routerLink="/restaurants" routerLinkActive="active"><i class="pi pi-map-marker"></i> Restauracje</a></li>
+          <li><a routerLink="/questions" routerLinkActive="active"><i class="pi pi-question-circle"></i> Pytania</a></li>
+          <li><a routerLink="/about" routerLinkActive="active"><i class="pi pi-info-circle"></i> O nas</a></li>
+        </ul>
+      </nav>
+
+      <div class="user-actions">
+        <button class="login-btn">
+          <i class="pi pi-user"></i>
+          <span class="login-text">Zaloguj się</span>
+        </button>
+      </div>
     </div>
   </div>
 </header>

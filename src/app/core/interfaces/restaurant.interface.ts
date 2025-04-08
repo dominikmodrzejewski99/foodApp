@@ -36,3 +36,17 @@ export interface RecommendationRequest {
   session_id?: string;
   answers: AnswerSubmission[];
 }
+
+/**
+ * Interfejs dla żądania dopasowania restauracji na podstawie ID odpowiedzi
+ */
+export interface MatchingRequest {
+  answer_ids: number[];
+}
+
+/**
+ * Interfejs dla odpowiedzi z dopasowanymi restauracjami
+ */
+export interface MatchingResponse {
+  restaurants: Restaurant[];
+}

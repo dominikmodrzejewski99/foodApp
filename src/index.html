@@ -1,14 +1,214 @@
 <!doctype html>
-<html lang="en">
+<html lang="pl">
 <head>
   <meta charset="utf-8">
-  <title>FoodApp</title>
+  <title>Co zjeść we Wrocławiu? | Najlepsze restauracje i lokale gastronomiczne 2025</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta name="description" content="Szukasz pomysłu co zjeść we Wrocławiu? Nasza aplikacja pomoże Ci wybrać najlepsze restauracje, bary i kawiarnie dopasowane do Twoich preferencji. Sprawdź rekomendacje i odkryj nowe smaki we Wrocławiu!">
+  <meta name="keywords" content="co zjeść Wrocław, restauracje Wrocław, gdzie zjeść we Wrocławiu, najlepsze jedzenie Wrocław, kuchnia wrocławska, rekomendacje restauracji, aplikacja kulinarna">
+  <meta name="author" content="Co zjeść?">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://cozjesc.pl/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://cozjesc.pl/">
+  <meta property="og:title" content="Co zjeść we Wrocławiu? | Najlepsze restauracje i lokale gastronomiczne 2025">
+  <meta property="og:description" content="Szukasz pomysłu co zjeść we Wrocławiu? Nasza aplikacja pomoże Ci wybrać najlepsze restauracje, bary i kawiarnie dopasowane do Twoich preferencji. Sprawdź rekomendacje i odkryj nowe smaki!">
+  <meta property="og:image" content="https://cozjesc.pl/assets/og-image-new.svg">
+  <meta property="og:locale" content="pl_PL">
+  <meta property="og:site_name" content="Co zjeść?">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://cozjesc.pl/">
+  <meta name="twitter:title" content="Co zjeść we Wrocławiu? | Najlepsze restauracje i lokale gastronomiczne">
+  <meta name="twitter:description" content="Szukasz pomysłu co zjeść we Wrocławiu? Nasza aplikacja pomoże Ci wybrać najlepsze restauracje, bary i kawiarnie dopasowane do Twoich preferencji.">
+  <meta name="twitter:image" content="https://cozjesc.pl/assets/og-image-new.svg">
+  <meta name="twitter:creator" content="@cozjesc_pl">
+
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon-cozjesc.svg">
+  <link rel="apple-touch-icon" href="/assets/apple-touch-icon-new.svg">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Schema.org markup for Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Co zjeść?",
+    "url": "https://cozjesc.pl",
+    "description": "Aplikacja pomagająca znaleźć najlepsze restauracje we Wrocławiu dopasowane do Twoich preferencji.",
+    "applicationCategory": "FoodAndDrink",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "PLN"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Co zjeść?",
+      "logo": "https://cozjesc.pl/assets/logo-cozjesc.svg"
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://cozjesc.pl/search?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Co zjeść?",
+    "url": "https://cozjesc.pl",
+    "logo": "https://cozjesc.pl/assets/logo-cozjesc.svg",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Wrocław",
+      "addressRegion": "Dolnośląskie",
+      "addressCountry": "PL"
+    },
+    "sameAs": [
+      "https://www.facebook.com/cozjesc",
+      "https://www.instagram.com/cozjesc_pl",
+      "https://twitter.com/cozjesc_pl"
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": [
+      {
+        "@type": "Restaurant",
+        "position": 1,
+        "name": "Najlepsza Restauracja we Wrocławiu",
+        "description": "Odkryj najlepsze smaki kuchni azjatyckiej we Wrocławiu.",
+        "url": "https://cozjesc.pl/restauracja/1",
+        "image": "https://cozjesc.pl/assets/restaurant1.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "pl. Tadeusza Kościuszki 6",
+          "addressLocality": "Wrocław",
+          "postalCode": "50-028",
+          "addressCountry": "PL"
+        },
+        "telephone": "+48123456789",
+        "servesCuisine": "Azjatycka",
+        "priceRange": "$$",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.8",
+          "reviewCount": "512"
+        }
+      },
+      {
+        "@type": "Restaurant",
+        "position": 2,
+        "name": "Popularna Restauracja Wrocławska",
+        "description": "Tradycyjna kuchnia polska w nowoczesnym wydaniu.",
+        "url": "https://cozjesc.pl/restauracja/2",
+        "image": "https://cozjesc.pl/assets/restaurant2.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Rynek 13",
+          "addressLocality": "Wrocław",
+          "postalCode": "50-101",
+          "addressCountry": "PL"
+        },
+        "telephone": "+48987654321",
+        "servesCuisine": "Polska",
+        "priceRange": "$$$",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.6",
+          "reviewCount": "328"
+        }
+      },
+      {
+        "@type": "Restaurant",
+        "position": 3,
+        "name": "Smaczna Restauracja Wrocławska",
+        "description": "Włoskie przysmaki w sercu Wrocławia.",
+        "url": "https://cozjesc.pl/restauracja/3",
+        "image": "https://cozjesc.pl/assets/restaurant3.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "ul. Świdnicka 8",
+          "addressLocality": "Wrocław",
+          "postalCode": "50-067",
+          "addressCountry": "PL"
+        },
+        "telephone": "+48123123123",
+        "servesCuisine": "Włoska",
+        "priceRange": "$$",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.5",
+          "reviewCount": "256"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Co zjeść we Wrocławiu?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We Wrocławiu znajdziesz szeroki wybór restauracji oferujących różnorodne kuchnie świata. Popularne są restauracje z kuchnią polską, włoską, azjatycką i amerykańską. Nasza aplikacja pomoże Ci wybrać najlepsze miejsce dopasowane do Twoich preferencji kulinarnych."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Gdzie zjeść tanio we Wrocławiu?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We Wrocławiu znajdziesz wiele przystępnych cenowo lokali gastronomicznych. Popularne są bary mleczne, food trucki, kebaby oraz azjatyckie bary. Wiele restauracji oferuje także atrakcyjne zestawy lunchowe w godzinach 12-16."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Jakie są najlepsze restauracje we Wrocławiu?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Wśród najlepszych restauracji we Wrocławiu wyróżniają się lokale na wrocławskim Rynku oraz w okolicach Ostrowa Tumskiego. Popularne są również restauracje w dzielnicach Stare Miasto, Ołbin i Krzyki. Nasza aplikacja pomoże Ci znaleźć najlepsze miejsca dopasowane do Twoich preferencji."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Jakie są tradycyjne potrawy wrocławskie?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Tradycyjne potrawy wrocławskie i dolnośląskie to m.in. śląski niedzielny obód z roladką, kluski śląskie i modra kapusta, wrocławskie pączki, pierniki śląskie oraz zupy: wrocławska zupa piwna i kwas chlebowy. Warto również spróbować lokalnych wędlin i serów z regionu Dolnego Śląska."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Gdzie zjeść śniadanie we Wrocławiu?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We Wrocławiu znajdziesz wiele kawiarni i restauracji serwujących pyszne śniadania. Popularne są miejsca w okolicach Rynku, na Nadodrzu oraz w dzielnicy Krzyki. Wiele lokali oferuje śniadania przez cały dzień, w tym klasyczne jajecznice, owsianki, kanapki i śniadania w stylu angielskim."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body class="mat-typography">
   <app-root></app-root>

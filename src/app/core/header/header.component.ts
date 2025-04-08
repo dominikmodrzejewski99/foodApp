@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -8,5 +7,23 @@ import { CommonModule } from '@angular/common';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  // Możesz dodać tutaj logikę dla headera, np. obsługę menu mobilnego
+  mobileMenuOpen = false;
+
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+
+    // Prevent scrolling when mobile menu is open
+    if (this.mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }
+
+  closeMobileMenu(): void {
+    if (this.mobileMenuOpen) {
+      this.mobileMenuOpen = false;
+      document.body.style.overflow = '';
+    }
+  }
 }

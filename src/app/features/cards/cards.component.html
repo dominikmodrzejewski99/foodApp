@@ -28,47 +28,63 @@
       </p-card>
     </div>
 
-    <div *ngIf="questions.length > 0 && getCurrentQuestion()" class="question-container" @fadeIn>
-      <p-card styleClass="question-card">
+    <div *ngIf="questions.length > 0 && getCurrentQuestion()" class="question-container fade-in slide-up">
+      <p-card styleClass="question-card shadow rounded">
         <ng-template pTemplate="header">
-          <div class="card-header-content">
-            <div class="question-number">Pytanie {{ currentQuestionIndex + 1 }}</div>
-            <h2 class="question-title">{{ getCurrentQuestion()?.question_text }}</h2>
-            <div class="question-subtitle">Wybierz opcję, która najlepiej pasuje do Twoich preferencji</div>
+          <div class="card-header-content bg-primary">
+            <div class="question-progress">
+              <div class="progress-text">Pytanie {{ currentQuestionIndex + 1 }} z {{ questions.length }}</div>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="(currentQuestionIndex + 1) / questions.length * 100"></div>
+              </div>
+            </div>
+            <h1 class="question-title">Co zjeść we Wrocławiu? {{ getCurrentQuestion()?.question_text }}</h1>
+            <div class="question-subtitle">Nie wiesz, na co masz ochotę? Wybierz opcję, która najbardziej Ci odpowiada</div>
           </div>
         </ng-template>
 
         <div class="answers-section">
-          <h3>Wybierz odpowiedź:</h3>
+          <h3 class="answers-heading">Wybierz odpowiedź:</h3>
 
           <div *ngIf="loading" class="loading-answers">
-            <div class="spinner spinner-small"></div>
-            Ładowanie odpowiedzi...
+            <div class="spinner-container">
+              <div class="spinner"></div>
+            </div>
+            <p class="loading-text">Ładowanie odpowiedzi...</p>
           </div>
 
           <div *ngIf="error" class="error-answers">
-            Nie udało się załadować odpowiedzi.
+            <i class="pi pi-exclamation-triangle error-icon"></i>
+            <p class="error-text">Nie udało się załadować odpowiedzi.</p>
+            <button class="retry-button" (click)="loadData()">Spróbuj ponownie</button>
           </div>
 
           <div *ngIf="!loading && !error" class="answer-options">
             <div *ngIf="filteredAnswers().length === 0" class="no-answers">
-              Brak odpowiedzi dla tego pytania.
+              <i class="pi pi-info-circle"></i>
+              <p>Brak odpowiedzi dla tego pytania.</p>
             </div>
 
-            <div *ngFor="let answer of filteredAnswers()"
+            <div *ngFor="let answer of filteredAnswers(); let i = index"
                 class="answer-option"
                 [class.selected]="isAnswerSelected(answer)"
                 (click)="setSelectedAnswer(answer)"
+                [style.animation-delay.ms]="i * 50"
+                [title]="isAnswerSelected(answer) ? 'Kliknij ponownie, aby odznaczyć' : ''"
                 @fadeIn>
               <div class="answer-radio">
-                <div class="radio-outer">
+                <div class="radio-outer" [class.can-unselect]="isAnswerSelected(answer)">
                   <div class="radio-inner" *ngIf="isAnswerSelected(answer)"></div>
+                  <i class="pi pi-times unselect-icon" *ngIf="isAnswerSelected(answer)"></i>
                 </div>
               </div>
               <div class="answer-content">
                 <div class="answer-text">{{ answer.answer_text }}</div>
                 <div class="answer-meta" *ngIf="answer.votes">
-                  <span class="votes">{{ answer.votes }} osób wybrało tę odpowiedź</span>
+                  <span class="votes">
+                    <i class="pi pi-users"></i>
+                    {{ answer.votes }} osób wybrało tę odpowiedź
+                  </span>
                 </div>
               </div>
             </div>
@@ -91,24 +107,29 @@
             (onClick)="nextQuestion()"
             styleClass="p-button-raised nav-button next-button"
             [ngClass]="{'p-button-success': currentQuestionIndex >= questions.length - 1, 'p-button-primary': currentQuestionIndex < questions.length - 1}"
-            [label]="currentQuestionIndex < questions.length - 1 ? 'Dalej' : 'Zakończ'"
+            [label]="currentQuestionIndex < questions.length - 1 ? 'Dalej' : 'Zakończ quiz'"
           ></p-button>
         </div>
 
-        <div class="question-hint" *ngIf="!selectedAnswers[currentQuestionIndex]">
-          Wybierz jedną z odpowiedzi, aby kontynuować
+        <div class="question-hint" [ngClass]="{'selected-hint': selectedAnswers[currentQuestionIndex]}">
+          <i class="pi" [ngClass]="{'pi-info-circle': !selectedAnswers[currentQuestionIndex], 'pi-check-circle': selectedAnswers[currentQuestionIndex]}"></i>
+          <span *ngIf="!selectedAnswers[currentQuestionIndex]">Wybierz jedną z odpowiedzi, aby kontynuować</span>
+          <span *ngIf="selectedAnswers[currentQuestionIndex]">Możesz zmienić odpowiedź klikając ponownie w zaznaczoną opcję</span>
         </div>
       </p-card>
     </div>
   </div>
 
   <!-- Widok rekomendacji -->
-  <div *ngIf="showResults" class="recommendations-container" @fadeIn>
-    <p-card styleClass="recommendations-card">
+  <div *ngIf="showResults" class="recommendations-container fade-in slide-up">
+    <p-card styleClass="recommendations-card shadow rounded">
       <ng-template pTemplate="header">
-        <div class="card-header-content">
-          <div class="recommendation-title">Twoje rekomendacje</div>
-          <h2 class="recommendation-subtitle">Na podstawie Twoich odpowiedzi, polecamy:</h2>
+        <div class="card-header-content bg-secondary">
+          <div class="recommendation-icon">
+            <i class="pi pi-thumbs-up"></i>
+          </div>
+          <h1 class="recommendation-title">Najlepsze miejsca, co zjeść we Wrocławiu 2025</h1>
+          <h2 class="recommendation-subtitle">Na podstawie Twoich preferencji, polecamy te restauracje i lokale gastronomiczne:</h2>
         </div>
       </ng-template>
 
@@ -135,44 +156,87 @@
 
         <!-- Lista rekomendacji -->
         <div *ngIf="apiRecommendations.length > 0" class="restaurant-list">
-          <div *ngFor="let recommendation of apiRecommendations; let i = index" class="restaurant-item" [class.top-pick]="i === 0" @fadeIn>
+          <h2 class="seo-heading">Popularne restauracje i lokale gastronomiczne we Wrocławiu</h2>
+          <p class="seo-description">Poniżej znajdziesz najlepsze miejsca, gdzie możesz zjeść we Wrocławiu. Nasze rekomendacje są dopasowane do Twoich preferencji kulinarnych i bazują na opiniach klientów oraz jakości serwowanych dań.</p>
+          <div *ngFor="let recommendation of apiRecommendations; let i = index"
+               class="restaurant-item"
+               [class.top-pick]="i === 0"
+               [style.animation-delay.ms]="i * 100"
+               @fadeIn>
             <div class="restaurant-rank top" *ngIf="i === 0">
-              <div class="rank-badge">Najlepszy wybór - {{ recommendation.match_score }}% dopasowania</div>
+              <div class="rank-badge">
+                <i class="pi pi-trophy"></i>
+                Najlepszy wybór - {{ recommendation.match_score }}% dopasowania
+              </div>
             </div>
             <div class="restaurant-rank" *ngIf="i > 0">
-              <div class="rank-badge secondary">{{ recommendation.match_score }}% dopasowania</div>
+              <div class="rank-badge secondary">
+                <i class="pi pi-check-circle"></i>
+                {{ recommendation.match_score }}% dopasowania
+              </div>
             </div>
+
             <div class="restaurant-header">
-              <h3 class="restaurant-name">{{ recommendation.restaurant.name }}</h3>
-              <div class="restaurant-rating">
-                <span class="rating-value">{{ recommendation.restaurant.rating || 0 }}/5</span>
-                <div class="rating-stars">
-                  <i class="pi pi-star-fill" *ngFor="let star of [].constructor(recommendation.restaurant.rating ? Math.floor(recommendation.restaurant.rating) : 0)"></i>
-                  <i class="pi pi-star" *ngFor="let star of [].constructor(recommendation.restaurant.rating ? 5 - Math.floor(recommendation.restaurant.rating) : 0)"></i>
+              <h3 class="restaurant-name">{{ recommendation.restaurant.name }} - Najlepsze miejsce, co zjeść we Wrocławiu</h3>
+            </div>
+
+            <div class="restaurant-details">
+              <div *ngIf="recommendation.restaurant.image_url" class="restaurant-image">
+                <img [src]="recommendation.restaurant.image_url" [alt]="recommendation.restaurant.name">
+              </div>
+
+              <div class="restaurant-info">
+                <div class="info-row cuisine">
+                  <i class="pi pi-tag"></i>
+                  <span><strong>Kuchnia:</strong> {{ recommendation.restaurant.cuisine }}</span>
+                </div>
+
+                <div class="info-row address">
+                  <i class="pi pi-map-marker"></i>
+                  <span><strong>Adres:</strong> {{ recommendation.restaurant.address }}, {{ recommendation.restaurant.city }}</span>
+                </div>
+
+                <div *ngIf="recommendation.restaurant.price_level" class="info-row price-level">
+                  <i class="pi pi-wallet"></i>
+                  <span>
+                    <strong>Poziom cenowy:</strong>
+                    <span class="price-indicator">
+                      <span *ngFor="let i of [1,2,3,4,5]"
+                            [ngClass]="{'active': i <= (recommendation.restaurant.price_level || 0)}">
+                        $
+                      </span>
+                    </span>
+                  </span>
+                </div>
+
+                <div *ngIf="recommendation.restaurant.description" class="info-row description">
+                  <i class="pi pi-info-circle"></i>
+                  <span>{{ recommendation.restaurant.description }}</span>
+                </div>
+
+                <div *ngIf="recommendation.restaurant.is_tiktok_recommended" class="tiktok-badge">
+                  <i class="pi pi-video"></i>
+                  <span>Popularne na TikToku</span>
                 </div>
               </div>
+            </div>
+
+            <div class="restaurant-actions">
+              <a *ngIf="recommendation.restaurant.website" [href]="recommendation.restaurant.website" target="_blank" class="action-button website-link">
+                <i class="pi pi-external-link"></i>
+                <span>Odwiedź stronę</span>
+              </a>
+              <a class="action-button map-link" (click)="openMap(recommendation.restaurant)">
+                <i class="pi pi-map"></i>
+                <span>Pokaż na mapie</span>
+              </a>
             </div>
 
           </div>
         </div>
 
-        <!-- Przycisk do pokazania wszystkich restauracji -->
+        <!-- Przyciski akcji -->
         <div class="action-buttons">
-          <p-button
-            *ngIf="!showAllRestaurants"
-            icon="pi pi-list"
-            (onClick)="showAllRestaurants = true"
-            styleClass="p-button-raised p-button-secondary"
-            label="Pokaż wszystkie restauracje"
-          ></p-button>
-
-          <p-button
-            *ngIf="showAllRestaurants"
-            icon="pi pi-times"
-            (onClick)="showAllRestaurants = false"
-            styleClass="p-button-raised p-button-secondary"
-            label="Ukryj wszystkie restauracje"
-          ></p-button>
 
           <p-button
             icon="pi pi-refresh"
@@ -180,56 +244,6 @@
             styleClass="p-button-raised p-button-primary restart-button"
             label="Rozpocznij od nowa"
           ></p-button>
-        </div>
-
-        <!-- Wszystkie restauracje -->
-        <div *ngIf="showAllRestaurants" class="all-restaurants">
-          <h3>Wszystkie restauracje</h3>
-          <div class="restaurant-list">
-            <div *ngFor="let restaurant of restaurants" class="restaurant-item" @fadeIn>
-              <div class="restaurant-header">
-                <h3 class="restaurant-name">{{ restaurant.name }}</h3>
-                <div class="restaurant-rating">
-                  <span class="rating-value">{{ restaurant.rating || 0 }}/5</span>
-                  <div class="rating-stars">
-                    <i class="pi pi-star-fill" *ngFor="let star of [].constructor(restaurant.rating ? Math.floor(restaurant.rating) : 0)"></i>
-                    <i class="pi pi-star" *ngFor="let star of [].constructor(restaurant.rating ? 5 - Math.floor(restaurant.rating) : 5)"></i>
-                  </div>
-                </div>
-              </div>
-<!--              <div class="restaurant-details">-->
-<!--                <div class="restaurant-info">-->
-<!--                  <div class="info-item">-->
-<!--                    <i class="pi pi-map-marker"></i>-->
-<!--                    <span>{{ restaurant.address }}, {{ restaurant.city }}</span>-->
-<!--                  </div>-->
-<!--                  <div class="info-item">-->
-<!--                    <i class="pi pi-tag"></i>-->
-<!--                    <span>{{ restaurant.cuisine }}</span>-->
-<!--                  </div>-->
-<!--                  <div class="info-item" *ngIf="restaurant.price_level">-->
-<!--                    <i class="pi pi-dollar"></i>-->
-<!--                    <span class="price-indicator">-->
-<!--                      <span *ngFor="let i of [1,2,3,4,5]" -->
-<!--                            [ngClass]="{'active': i <= (restaurant.price_level || 0)}">$</span>-->
-<!--                    </span>-->
-<!--                  </div>-->
-<!--                  <div class="info-item" *ngIf="restaurant.description">-->
-<!--                    <i class="pi pi-info-circle"></i>-->
-<!--                    <span>{{ restaurant.description }}</span>-->
-<!--                  </div>-->
-<!--                  <div class="info-item" *ngIf="restaurant.is_tiktok_recommended" class="tiktok-badge">-->
-<!--                    <i class="pi pi-fire"></i>-->
-<!--                    <span>Popularne na TikToku</span>-->
-<!--                  </div>-->
-<!--                  <div class="info-item" *ngIf="restaurant.website">-->
-<!--                    <i class="pi pi-globe"></i>-->
-<!--                    <a [href]="restaurant.website" target="_blank">{{ restaurant.website }}</a>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-            </div>
-          </div>
         </div>
       </div>
     </p-card>

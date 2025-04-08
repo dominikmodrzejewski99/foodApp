@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+// Import standalone components for routing
 import { RestaurantListComponent } from './features/restaurants/restaurant-list/restaurant-list.component';
 import { RestaurantRecommendationsComponent } from './features/restaurants/restaurant-recommendations/restaurant-recommendations.component';
 import { CardsComponent } from './features/cards/cards.component';
@@ -13,10 +15,7 @@ export const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes),
-    // Importujemy komponenty standalone
-    RestaurantListComponent,
-    RestaurantRecommendationsComponent
+    RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]
 })

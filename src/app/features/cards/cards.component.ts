@@ -57,7 +57,6 @@ export class CardsComponent implements OnInit {
   selectedAnswers: (Answer | null)[] = [];
   currentQuestionIndex = 0;
   showResults = false;
-  showAllRestaurants = false;
   loading = true;
   error: string | null = null;
   Math = Math; // Aby móc używać Math w szablonie
@@ -127,7 +126,13 @@ export class CardsComponent implements OnInit {
   }
 
   setSelectedAnswer(answer: Answer): void {
-    this.selectedAnswers[this.currentQuestionIndex] = answer;
+    // Jeśli kliknięto już zaznaczoną odpowiedź, odznacz ją
+    if (this.selectedAnswers[this.currentQuestionIndex]?.id === answer.id) {
+      this.selectedAnswers[this.currentQuestionIndex] = null;
+    } else {
+      // W przeciwnym razie zaznacz nową odpowiedź
+      this.selectedAnswers[this.currentQuestionIndex] = answer;
+    }
   }
 
   previousQuestion(): void {
@@ -149,8 +154,16 @@ export class CardsComponent implements OnInit {
     this.selectedAnswers = new Array(this.questions.length).fill(null);
     this.currentQuestionIndex = 0;
     this.showResults = false;
-    this.showAllRestaurants = false;
     this.apiRecommendations = []; // Wyczyść rekomendacje z API
+  }
+
+  /**
+   * Opens a map with the restaurant location
+   */
+  openMap(restaurant: Restaurant): void {
+    const address = encodeURIComponent(`${restaurant.address}, ${restaurant.city}`);
+    const mapUrl = `https://www.google.com/maps/search/?api=1&query=${address}`;
+    window.open(mapUrl, '_blank');
   }
 
   // Tablica do przechowywania rekomendacji z API
@@ -215,7 +228,67 @@ export class CardsComponent implements OnInit {
 
     // Pokaż wyniki
     this.showResults = true;
+    this.loading = true;
 
-    // Rekomendacje są już przygotowane w loadData(), nie musimy ponownie pobierać danych
+    // Zbierz ID wybranych odpowiedzi
+    const answerIds = this.selectedAnswers
+      .filter(answer => answer !== null) // Usuń puste odpowiedzi
+      .map(answer => answer!.id!); // Pobierz ID odpowiedzi
+
+    console.log('Selected answer IDs:', answerIds);
+
+    // Pobierz dopasowane restauracje z API
+    this.restaurantService.getMatchingRestaurants(answerIds).subscribe({
+      next: (restaurants) => {
+        console.log('Matching restaurants received:', restaurants);
+
+        // Wypisz wartości match_score dla debugowania
+        console.log('Match scores before processing:', restaurants.map(r => r.match_score));
+
+        // Konwertuj otrzymane restauracje na format RestaurantRecommendation
+        // Pobierz tylko top 3 restauracje
+        this.apiRecommendations = restaurants
+          .slice(0, 3) // Pobierz tylko top 3 restauracje
+          .map(restaurant => {
+            // Konwertuj wartość match_score na procent jeśli potrzeba
+            let matchScore = restaurant.match_score;
+            console.log(`Processing restaurant ${restaurant.name}, original match_score:`, matchScore);
+
+            // Jeśli match_score jest undefined lub null, ustaw na 50 (wartość domyślna)
+            if (matchScore === undefined || matchScore === null) {
+              console.log(`Setting default match_score for ${restaurant.name}`);
+              matchScore = 50;
+            } else if (matchScore <= 1) {
+              // Jeśli wartość jest między 0 a 1, konwertujemy na procent (0-100)
+              console.log(`Converting match_score from 0-1 scale to percentage for ${restaurant.name}`);
+              matchScore = Math.round(matchScore * 100);
+            } else if (matchScore <= 10) {
+              // Jeśli wartość jest między 0 a 10, konwertujemy na procent (0-100)
+              console.log(`Converting match_score from 0-10 scale to percentage for ${restaurant.name}`);
+              matchScore = Math.round(matchScore * 10);
+            }
+
+            console.log(`Final match_score for ${restaurant.name}:`, matchScore);
+
+            return {
+              restaurant: restaurant,
+              match_score: matchScore,
+              matches: 0 // Domyślna wartość dla pola matches
+            };
+          });
+
+        // Wypisz finalne rekomendacje
+        console.log('Final recommendations:', this.apiRecommendations);
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error getting matching restaurants:', err);
+        this.loading = false;
+        this.error = 'Nie udało się pobrać dopasowanych restauracji. Spróbuj ponownie później.';
+
+        // Fallback - użyj domyślnych rekomendacji
+        this.prepareRecommendations(this.restaurants);
+      }
+    });
   }
 }

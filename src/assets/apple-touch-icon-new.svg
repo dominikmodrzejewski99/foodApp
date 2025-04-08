@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4338CA" />
+      <stop offset="100%" stop-color="#3730A3" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="180" height="180" rx="45" fill="url(#logoGradient)" />
+  
+  <!-- Logo -->
+  <g transform="translate(40, 40)">
+    <!-- Plate -->
+    <ellipse cx="50" cy="70" rx="40" ry="12" fill="white" stroke="white" stroke-width="1" />
+    
+    <!-- Fork -->
+    <path d="M30,20 L30,60 C30,65 35,68 40,68" stroke="white" stroke-width="4" stroke-linecap="round" fill="none" />
+    <path d="M30,25 L40,25" stroke="white" stroke-width="3" stroke-linecap="round" />
+    <path d="M30,32 L40,32" stroke="white" stroke-width="3" stroke-linecap="round" />
+    <path d="M30,39" stroke="white" stroke-width="3" stroke-linecap="round" />
+    
+    <!-- Knife -->
+    <path d="M70,20 L70,60 C70,65 65,68 60,68" stroke="white" stroke-width="4" stroke-linecap="round" fill="none" />
+    <path d="M65,20 L70,20 L70,35" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+    
+    <!-- Question Mark -->
+    <text x="80" y="45" font-family="Poppins, sans-serif" font-size="40" font-weight="bold" fill="white">?</text>
+    
+    <!-- Food Elements -->
+    <!-- Tomato -->
+    <circle cx="45" cy="50" r="6" fill="#E34234" />
+    
+    <!-- Lettuce -->
+    <path d="M50,45 C55,42 60,45 58,50" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" fill="none" />
+  </g>
+</svg>
