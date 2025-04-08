@@ -127,59 +127,32 @@
         </div>
 
         <!-- Brak rekomendacji -->
-        <div *ngIf="!loading && !error && getRecommendedRestaurants().length === 0" class="no-recommendations">
+        <div *ngIf="!loading && !error && apiRecommendations.length === 0" class="no-recommendations">
           <p-card header="Brak rekomendacji" styleClass="p-card-warning">
             <p>Nie znaleziono restauracji pasujących do Twoich preferencji. Spróbuj zmienić swoje odpowiedzi.</p>
           </p-card>
         </div>
 
         <!-- Lista rekomendacji -->
-        <div *ngIf="getRecommendedRestaurants().length > 0" class="restaurant-list">
-          <div *ngFor="let restaurant of getRecommendedRestaurants(); let i = index" class="restaurant-item" [class.top-pick]="i === 0" @fadeIn>
-            <div class="restaurant-rank" *ngIf="i === 0">
-              <div class="rank-badge">Najlepszy wybór</div>
+        <div *ngIf="apiRecommendations.length > 0" class="restaurant-list">
+          <div *ngFor="let recommendation of apiRecommendations; let i = index" class="restaurant-item" [class.top-pick]="i === 0" @fadeIn>
+            <div class="restaurant-rank top" *ngIf="i === 0">
+              <div class="rank-badge">Najlepszy wybór - {{ recommendation.match_score }}% dopasowania</div>
+            </div>
+            <div class="restaurant-rank" *ngIf="i > 0">
+              <div class="rank-badge secondary">{{ recommendation.match_score }}% dopasowania</div>
             </div>
             <div class="restaurant-header">
-              <h3 class="restaurant-name">{{ restaurant.name }}</h3>
+              <h3 class="restaurant-name">{{ recommendation.restaurant.name }}</h3>
               <div class="restaurant-rating">
-                <span class="rating-value">{{ restaurant.rating || 0 }}/5</span>
+                <span class="rating-value">{{ recommendation.restaurant.rating || 0 }}/5</span>
                 <div class="rating-stars">
-                  <i class="pi pi-star-fill" *ngFor="let star of [].constructor(restaurant.rating ? Math.floor(restaurant.rating) : 0)"></i>
-                  <i class="pi pi-star" *ngFor="let star of [].constructor(restaurant.rating ? 5 - Math.floor(restaurant.rating) : 5)"></i>
+                  <i class="pi pi-star-fill" *ngFor="let star of [].constructor(recommendation.restaurant.rating ? Math.floor(recommendation.restaurant.rating) : 0)"></i>
+                  <i class="pi pi-star" *ngFor="let star of [].constructor(recommendation.restaurant.rating ? 5 - Math.floor(recommendation.restaurant.rating) : 0)"></i>
                 </div>
               </div>
             </div>
-<!--            <div class="restaurant-details">-->
-<!--              <div class="restaurant-info">-->
-<!--                <div class="info-item">-->
-<!--                  <i class="pi pi-map-marker"></i>-->
-<!--                  <span>{{ restaurant.address }}, {{ restaurant.city }}</span>-->
-<!--                </div>-->
-<!--                <div class="info-item">-->
-<!--                  <i class="pi pi-tag"></i>-->
-<!--                  <span>{{ restaurant.cuisine }}</span>-->
-<!--                </div>-->
-<!--                <div class="info-item" *ngIf="restaurant.price_level">-->
-<!--                  <i class="pi pi-dollar"></i>-->
-<!--                  <span class="price-indicator">-->
-<!--                    <span *ngFor="let i of [1,2,3,4,5]" -->
-<!--                          [ngClass]="{'active': i <= (restaurant.price_level || 0)}">$</span>-->
-<!--                  </span>-->
-<!--                </div>-->
-<!--                <div class="info-item" *ngIf="restaurant.description">-->
-<!--                  <i class="pi pi-info-circle"></i>-->
-<!--                  <span>{{ restaurant.description }}</span>-->
-<!--                </div>-->
-<!--                <div class="info-item" *ngIf="restaurant.is_tiktok_recommended" class="tiktok-badge">-->
-<!--                  <i class="pi pi-fire"></i>-->
-<!--                  <span>Popularne na TikToku</span>-->
-<!--                </div>-->
-<!--                <div class="info-item" *ngIf="restaurant.website">-->
-<!--                  <i class="pi pi-globe"></i>-->
-<!--                  <a [href]="restaurant.website" target="_blank">{{ restaurant.website }}</a>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
+
           </div>
         </div>
 

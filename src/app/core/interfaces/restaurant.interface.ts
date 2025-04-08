@@ -12,6 +12,7 @@ export interface Restaurant {
   is_tiktok_recommended?: boolean;
   popularity_score?: number;
   created_at?: string;
+  match_score?: number;
   updated_at?: string;
 }
 

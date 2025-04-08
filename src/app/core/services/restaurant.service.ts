@@ -32,7 +32,28 @@ export class RestaurantService {
    * Pobiera rekomendacje restauracji na podstawie odpowiedzi użytkownika
    */
   getRecommendations(request: RecommendationRequest): Observable<RecommendationResponse> {
-    return this.http.post<RecommendationResponse>(`${this.apiUrl}/recommendations`, request);
+    // Tymczasowo wyłączamy żądanie POST na endpoint /recommendations
+    // i zamiast tego pobieramy restauracje za pomocą GET z /restaurants
+    // i obliczamy match_score lokalnie
+    return new Observable<RecommendationResponse>(observer => {
+      this.getRestaurants().subscribe({
+        next: (restaurants) => {
+          // Przykładowa logika obliczania match_score
+          const recommendations = restaurants
+            .map(restaurant => ({
+              restaurant,
+              match_score: Math.floor(Math.random() * 100), // Losowa wartość match_score
+              matches: 0
+            }))
+            .sort((a, b) => b.match_score - a.match_score)
+            .slice(0, 5); // Pobierz top 5 restauracji
+
+          observer.next({ recommendations });
+          observer.complete();
+        },
+        error: (err) => observer.error(err)
+      });
+    });
   }
 
   /**

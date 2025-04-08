@@ -24,94 +24,94 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
- * 
+ *
  * @export
  * @interface Caa0baf44bc64c9b94a44e9ed5bc418d200ResponseInner
  */
 export interface Caa0baf44bc64c9b94a44e9ed5bc418d200ResponseInner {
     /**
-     * 
+     *
      * @type {number}
      * @memberof Caa0baf44bc64c9b94a44e9ed5bc418d200ResponseInner
      */
     'id'?: number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof Caa0baf44bc64c9b94a44e9ed5bc418d200ResponseInner
      */
     'question_text'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof Caa0baf44bc64c9b94a44e9ed5bc418d200ResponseInner
      */
     'created_at'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof Caa0baf44bc64c9b94a44e9ed5bc418d200ResponseInner
      */
     'updated_at'?: string;
 }
 /**
- * 
+ *
  * @export
  * @interface Fd2c54c83721116cef0ad4b94134932b200ResponseInner
  */
 export interface Fd2c54c83721116cef0ad4b94134932b200ResponseInner {
     /**
-     * 
+     *
      * @type {number}
      * @memberof Fd2c54c83721116cef0ad4b94134932b200ResponseInner
      */
     'id'?: number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof Fd2c54c83721116cef0ad4b94134932b200ResponseInner
      */
     'question_id'?: number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof Fd2c54c83721116cef0ad4b94134932b200ResponseInner
      */
     'answer_text'?: string;
     /**
-     * 
+     *
      * @type {number}
      * @memberof Fd2c54c83721116cef0ad4b94134932b200ResponseInner
      */
     'votes'?: number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof Fd2c54c83721116cef0ad4b94134932b200ResponseInner
      */
     'created_at'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof Fd2c54c83721116cef0ad4b94134932b200ResponseInner
      */
     'updated_at'?: string;
 }
 /**
- * 
+ *
  * @export
  * @interface Model7270982c262ae0c4e547d5eec368e436200Response
  */
 export interface Model7270982c262ae0c4e547d5eec368e436200Response {
     /**
-     * 
+     *
      * @type {string}
      * @memberof Model7270982c262ae0c4e547d5eec368e436200Response
      */
     'message'?: string;
 }
 /**
- * 
+ *
  * @export
  * @interface Restaurant
  */
@@ -170,6 +170,7 @@ export interface Restaurant {
      * @memberof Restaurant
      */
     'updated_at'?: string;
+    'match_score'?: number;
 }
 
 /**
@@ -179,7 +180,7 @@ export interface Restaurant {
 export const PollsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         *
          * @summary Get list of questions
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -198,7 +199,7 @@ export const PollsApiAxiosParamCreator = function (configuration?: Configuration
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -209,7 +210,7 @@ export const PollsApiAxiosParamCreator = function (configuration?: Configuration
             };
         },
         /**
-         * 
+         *
          * @summary Get list of answers
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -228,7 +229,7 @@ export const PollsApiAxiosParamCreator = function (configuration?: Configuration
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -249,7 +250,7 @@ export const PollsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = PollsApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         *
          * @summary Get list of questions
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -261,7 +262,7 @@ export const PollsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         *
          * @summary Get list of answers
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -283,7 +284,7 @@ export const PollsApiFactory = function (configuration?: Configuration, basePath
     const localVarFp = PollsApiFp(configuration)
     return {
         /**
-         * 
+         *
          * @summary Get list of questions
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -292,7 +293,7 @@ export const PollsApiFactory = function (configuration?: Configuration, basePath
             return localVarFp.caa0baf44bc64c9b94a44e9ed5bc418d(options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         *
          * @summary Get list of answers
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -311,7 +312,7 @@ export const PollsApiFactory = function (configuration?: Configuration, basePath
  */
 export class PollsApi extends BaseAPI {
     /**
-     * 
+     *
      * @summary Get list of questions
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -322,7 +323,7 @@ export class PollsApi extends BaseAPI {
     }
 
     /**
-     * 
+     *
      * @summary Get list of answers
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -342,7 +343,7 @@ export class PollsApi extends BaseAPI {
 export const RestaurantsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * 
+         *
          * @summary Get list of restaurants
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -361,7 +362,7 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -372,7 +373,7 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 
+         *
          * @summary Get restaurant by ID
          * @param {number} id Restaurant ID
          * @param {*} [options] Override http request option.
@@ -395,7 +396,7 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -406,7 +407,7 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 
+         *
          * @summary Delete restaurant by ID
          * @param {number} id Restaurant ID
          * @param {*} [options] Override http request option.
@@ -429,7 +430,7 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -440,9 +441,9 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 
+         *
          * @summary Create a new restaurant
-         * @param {Restaurant} restaurant 
+         * @param {Restaurant} restaurant
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -462,7 +463,7 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -476,10 +477,10 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
             };
         },
         /**
-         * 
+         *
          * @summary Update restaurant by ID
          * @param {number} id Restaurant ID
-         * @param {Restaurant} restaurant 
+         * @param {Restaurant} restaurant
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -502,7 +503,7 @@ export const RestaurantsApiAxiosParamCreator = function (configuration?: Configu
             const localVarQueryParameter = {} as any;
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -526,7 +527,7 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = RestaurantsApiAxiosParamCreator(configuration)
     return {
         /**
-         * 
+         *
          * @summary Get list of restaurants
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -538,7 +539,7 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         *
          * @summary Get restaurant by ID
          * @param {number} id Restaurant ID
          * @param {*} [options] Override http request option.
@@ -551,7 +552,7 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         *
          * @summary Delete restaurant by ID
          * @param {number} id Restaurant ID
          * @param {*} [options] Override http request option.
@@ -564,9 +565,9 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         *
          * @summary Create a new restaurant
-         * @param {Restaurant} restaurant 
+         * @param {Restaurant} restaurant
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -577,10 +578,10 @@ export const RestaurantsApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         *
          * @summary Update restaurant by ID
          * @param {number} id Restaurant ID
-         * @param {Restaurant} restaurant 
+         * @param {Restaurant} restaurant
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -601,7 +602,7 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
     const localVarFp = RestaurantsApiFp(configuration)
     return {
         /**
-         * 
+         *
          * @summary Get list of restaurants
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -610,7 +611,7 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
             return localVarFp._0ef65917394f8eb77311d1d085ff31e4(options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         *
          * @summary Get restaurant by ID
          * @param {number} id Restaurant ID
          * @param {*} [options] Override http request option.
@@ -620,7 +621,7 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
             return localVarFp._26e68feb8cf848945261ce292866ec2c(id, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         *
          * @summary Delete restaurant by ID
          * @param {number} id Restaurant ID
          * @param {*} [options] Override http request option.
@@ -630,9 +631,9 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
             return localVarFp._7270982c262ae0c4e547d5eec368e436(id, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         *
          * @summary Create a new restaurant
-         * @param {Restaurant} restaurant 
+         * @param {Restaurant} restaurant
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -640,10 +641,10 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
             return localVarFp._938db3c3288b69d111a27774178532ab(restaurant, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         *
          * @summary Update restaurant by ID
          * @param {number} id Restaurant ID
-         * @param {Restaurant} restaurant 
+         * @param {Restaurant} restaurant
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -661,7 +662,7 @@ export const RestaurantsApiFactory = function (configuration?: Configuration, ba
  */
 export class RestaurantsApi extends BaseAPI {
     /**
-     * 
+     *
      * @summary Get list of restaurants
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -672,7 +673,7 @@ export class RestaurantsApi extends BaseAPI {
     }
 
     /**
-     * 
+     *
      * @summary Get restaurant by ID
      * @param {number} id Restaurant ID
      * @param {*} [options] Override http request option.
@@ -684,7 +685,7 @@ export class RestaurantsApi extends BaseAPI {
     }
 
     /**
-     * 
+     *
      * @summary Delete restaurant by ID
      * @param {number} id Restaurant ID
      * @param {*} [options] Override http request option.
@@ -696,9 +697,9 @@ export class RestaurantsApi extends BaseAPI {
     }
 
     /**
-     * 
+     *
      * @summary Create a new restaurant
-     * @param {Restaurant} restaurant 
+     * @param {Restaurant} restaurant
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RestaurantsApi
@@ -708,10 +709,10 @@ export class RestaurantsApi extends BaseAPI {
     }
 
     /**
-     * 
+     *
      * @summary Update restaurant by ID
      * @param {number} id Restaurant ID
-     * @param {Restaurant} restaurant 
+     * @param {Restaurant} restaurant
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof RestaurantsApi
