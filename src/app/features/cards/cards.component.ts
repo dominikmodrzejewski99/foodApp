@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, computed, effect, Signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Card } from "primeng/card";
 import { Button } from "primeng/button";
@@ -51,15 +51,35 @@ const API_BASE_URL = 'http://127.0.0.1:8000';
   ],
 })
 export class CardsComponent implements OnInit {
-  questions: Question[] = [];
-  answers: Answer[] = [];
-  restaurants: ApiRestaurant[] = [];
-  selectedAnswers: (Answer | null)[] = [];
-  currentQuestionIndex = 0;
-  showResults = false;
-  loading = true;
-  error: string | null = null;
-  Math = Math; // Aby móc używać Math w szablonie
+  // Stan aplikacji jako Signals
+  questions = signal<Question[]>([]);
+  answers = signal<Answer[]>([]);
+  restaurants = signal<ApiRestaurant[]>([]);
+  selectedAnswers = signal<(Answer | null)[]>([]);
+  currentQuestionIndex = signal<number>(0);
+  showResults = signal<boolean>(false);
+  loading = signal<boolean>(true);
+  error = signal<string | null>(null);
+
+  // Computed values
+  currentQuestion = computed(() => {
+    const questions = this.questions();
+    const index = this.currentQuestionIndex();
+    return questions.length > 0 && index < questions.length ? questions[index] : null;
+  });
+
+  hasSelectedAnswer = computed(() => {
+    const answers = this.selectedAnswers();
+    const index = this.currentQuestionIndex();
+    return answers.length > index && answers[index] !== null;
+  });
+
+  filteredAnswers = computed(() => {
+    const currentQ = this.currentQuestion();
+    const allAnswers = this.answers();
+    if (!currentQ) return [];
+    return allAnswers.filter(a => a.question_id === currentQ.id);
+  });
 
   constructor(private http: HttpClient, private restaurantService: RestaurantService) {
   }
@@ -70,18 +90,20 @@ export class CardsComponent implements OnInit {
 
   async loadData(): Promise<void> {
     try {
-      this.loading = true;
-      this.error = null;
+      this.loading.set(true);
+      this.error.set(null);
 
       // Load questions using HttpClient
-      this.questions = await firstValueFrom(
+      const questions = await firstValueFrom(
         this.http.get<Question[]>(`${API_BASE_URL}/api/questions`)
       );
+      this.questions.set(questions);
 
       // Load answers using HttpClient
-      this.answers = await firstValueFrom(
+      const answers = await firstValueFrom(
         this.http.get<Answer[]>(`${API_BASE_URL}/api/answers`)
       );
+      this.answers.set(answers);
 
       // Load restaurants using HttpClient - tylko jedno wywołanie API
       const apiRestaurants = await firstValueFrom(
@@ -89,85 +111,97 @@ export class CardsComponent implements OnInit {
       );
 
       // Zapisujemy restauracje jako ApiRestaurant[] (bez konwersji)
-      this.restaurants = apiRestaurants as ApiRestaurant[];
+      this.restaurants.set(apiRestaurants as ApiRestaurant[]);
 
       // Przygotuj rekomendacje od razu po załadowaniu danych
-      this.prepareRecommendations(this.restaurants);
+      this.prepareRecommendations(this.restaurants());
 
       // Initialize selectedAnswers array with nulls
-      this.selectedAnswers = new Array(this.questions.length).fill(null);
+      this.selectedAnswers.set(new Array(this.questions().length).fill(null));
 
-      this.loading = false;
+      this.loading.set(false);
     } catch (error) {
-      this.loading = false;
-      this.error = 'Nie udało się załadować danych. Spróbuj ponownie później.';
+      this.loading.set(false);
+      this.error.set('Nie udało się załadować danych. Spróbuj ponownie później.');
       console.error('Error loading data:', error);
     }
   }
 
-  getCurrentQuestion(): Question | null {
-    if (this.questions.length === 0 || this.currentQuestionIndex >= this.questions.length) {
-      return null;
-    }
-    return this.questions[this.currentQuestionIndex];
-  }
+  // Metoda getCurrentQuestion została zastąpiona przez computed property currentQuestion
 
-  filteredAnswers(): Answer[] {
-    const currentQuestion = this.getCurrentQuestion();
-    if (!currentQuestion) return [];
-
-    return this.answers.filter(answer =>
-      answer.question_id === currentQuestion.id
-    );
-  }
+  // Metoda filteredAnswers została zastąpiona przez computed property filteredAnswers
 
   isAnswerSelected(answer: Answer): boolean {
-    return this.selectedAnswers[this.currentQuestionIndex]?.id === answer.id;
+    const answers = this.selectedAnswers();
+    const index = this.currentQuestionIndex();
+    return answers[index]?.id === answer.id;
   }
 
   setSelectedAnswer(answer: Answer): void {
     // Jeśli kliknięto już zaznaczoną odpowiedź, odznacz ją
-    if (this.selectedAnswers[this.currentQuestionIndex]?.id === answer.id) {
-      this.selectedAnswers[this.currentQuestionIndex] = null;
+    const currentAnswers = this.selectedAnswers();
+    const index = this.currentQuestionIndex();
+
+    if (currentAnswers[index]?.id === answer.id) {
+      // Tworzymy nową kopię tablicy, aby zachować immutability
+      const newAnswers = [...currentAnswers];
+      newAnswers[index] = null;
+      this.selectedAnswers.set(newAnswers);
     } else {
       // W przeciwnym razie zaznacz nową odpowiedź
-      this.selectedAnswers[this.currentQuestionIndex] = answer;
+      const newAnswers = [...currentAnswers];
+      newAnswers[index] = answer;
+      this.selectedAnswers.set(newAnswers);
     }
   }
 
   previousQuestion(): void {
-    if (this.currentQuestionIndex > 0) {
-      this.currentQuestionIndex--;
+    const currentIndex = this.currentQuestionIndex();
+    if (currentIndex > 0) {
+      this.currentQuestionIndex.set(currentIndex - 1);
     }
   }
 
   nextQuestion(): void {
-    if (this.currentQuestionIndex < this.questions.length - 1) {
-      this.currentQuestionIndex++;
+    const currentIndex = this.currentQuestionIndex();
+    const questionsLength = this.questions().length;
+
+    if (currentIndex < questionsLength - 1) {
+      this.currentQuestionIndex.set(currentIndex + 1);
     } else {
       // Po zakończeniu pytań pobierz rekomendacje i pokaż wyniki
+      this.showResults.set(true);
       this.getRecommendations();
     }
   }
 
   resetQuiz(): void {
-    this.selectedAnswers = new Array(this.questions.length).fill(null);
-    this.currentQuestionIndex = 0;
-    this.showResults = false;
-    this.apiRecommendations = []; // Wyczyść rekomendacje z API
+    this.selectedAnswers.set(new Array(this.questions().length).fill(null));
+    this.currentQuestionIndex.set(0);
+    this.showResults.set(false);
+    this.apiRecommendations.set([]); // Wyczyść rekomendacje z API
   }
 
   /**
    * Opens a map with the restaurant location
    */
   openMap(restaurant: Restaurant): void {
-    const address = encodeURIComponent(`${restaurant.address}, ${restaurant.city}`);
-    const mapUrl = `https://www.google.com/maps/search/?api=1&query=${address}`;
-    window.open(mapUrl, '_blank');
+    if (!restaurant || !restaurant.address || !restaurant.city) {
+      console.error('Brak danych adresowych dla restauracji:', restaurant);
+      return;
+    }
+
+    try {
+      const address = encodeURIComponent(`${restaurant.address}, ${restaurant.city}`);
+      const mapUrl = `https://www.google.com/maps/search/?api=1&query=${address}`;
+      window.open(mapUrl, '_blank');
+    } catch (error) {
+      console.error('Błąd podczas otwierania mapy:', error);
+    }
   }
 
-  // Tablica do przechowywania rekomendacji z API
-  apiRecommendations: RestaurantRecommendation[] = [];
+  // Tablica do przechowywania rekomendacji z API jako Signal
+  apiRecommendations = signal<RestaurantRecommendation[]>([]);
 
   // Metoda pomocnicza do przygotowania rekomendacji z danych restauracji
   private prepareRecommendations(restaurants: ApiRestaurant[]): void {
@@ -185,7 +219,7 @@ export class CardsComponent implements OnInit {
     });
 
     // Utwórz obiekty RestaurantRecommendation
-    this.apiRecommendations = sortedRestaurants
+    const recommendations = sortedRestaurants
       .slice(0, 3) // Pobierz top 3 restauracji
       .map(restaurant => {
         // Konwertuj ApiRestaurant na Restaurant
@@ -217,21 +251,25 @@ export class CardsComponent implements OnInit {
           matches: 0 // Domyślna wartość dla pola matches
         };
       });
+
+    // Aktualizuj signal
+    this.apiRecommendations.set(recommendations);
   }
 
   // Metoda do pobierania restauracji po zakończeniu quizu
   getRecommendations(): void {
-    if (this.selectedAnswers.length === 0) {
+    const selectedAnswers = this.selectedAnswers();
+    if (selectedAnswers.length === 0) {
       console.log('No answers selected, cannot get restaurants');
       return;
     }
 
     // Pokaż wyniki
-    this.showResults = true;
-    this.loading = true;
+    this.showResults.set(true);
+    this.loading.set(true);
 
     // Zbierz ID wybranych odpowiedzi
-    const answerIds = this.selectedAnswers
+    const answerIds = selectedAnswers
       .filter(answer => answer !== null) // Usuń puste odpowiedzi
       .map(answer => answer!.id!); // Pobierz ID odpowiedzi
 
@@ -247,7 +285,7 @@ export class CardsComponent implements OnInit {
 
         // Konwertuj otrzymane restauracje na format RestaurantRecommendation
         // Pobierz tylko top 3 restauracje
-        this.apiRecommendations = restaurants
+        const recommendations = restaurants
           .slice(0, 3) // Pobierz tylko top 3 restauracje
           .map(restaurant => {
             // Konwertuj wartość match_score na procent jeśli potrzeba
@@ -277,17 +315,20 @@ export class CardsComponent implements OnInit {
             };
           });
 
+        // Aktualizuj signal z rekomendacjami
+        this.apiRecommendations.set(recommendations);
+
         // Wypisz finalne rekomendacje
-        console.log('Final recommendations:', this.apiRecommendations);
-        this.loading = false;
+        console.log('Final recommendations:', recommendations);
+        this.loading.set(false);
       },
       error: (err) => {
         console.error('Error getting matching restaurants:', err);
-        this.loading = false;
-        this.error = 'Nie udało się pobrać dopasowanych restauracji. Spróbuj ponownie później.';
+        this.loading.set(false);
+        this.error.set('Nie udało się pobrać dopasowanych restauracji. Spróbuj ponownie później.');
 
         // Fallback - użyj domyślnych rekomendacji
-        this.prepareRecommendations(this.restaurants);
+        this.prepareRecommendations(this.restaurants());
       }
     });
   }

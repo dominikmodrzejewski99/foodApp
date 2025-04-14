@@ -64,24 +64,6 @@ export class RestaurantService {
   }
 
   /**
-   * Pobiera popularne restauracje (z TikToka)
-   */
-  getPopularRestaurants(): Observable<Restaurant[]> {
-    // Filtrujemy restauracje po stronie klienta, ponieważ backend nie ma dedykowanego endpointu
-    return new Observable<Restaurant[]>(observer => {
-      this.getRestaurants().subscribe({
-        next: (restaurants) => {
-          const popularRestaurants = restaurants.filter(r => r.is_tiktok_recommended)
-            .sort((a, b) => (b.popularity_score || 0) - (a.popularity_score || 0));
-          observer.next(popularRestaurants);
-          observer.complete();
-        },
-        error: (err) => observer.error(err)
-      });
-    });
-  }
-
-  /**
    * Pobiera dopasowane restauracje na podstawie ID odpowiedzi
    * @param answerIds Tablica ID odpowiedzi
    */

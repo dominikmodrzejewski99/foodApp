@@ -20,7 +20,6 @@ import {
   MatCardSubtitle,
   MatCardTitle
 } from "@angular/material/card";
-import { counterReducer } from "./store/reducers/card.reducer";
 import { CoreModule } from "./core/core.module";
 import { ButtonModule } from "primeng/button";
 import { TableModule } from "primeng/table";
@@ -40,7 +39,6 @@ import { RestaurantListComponent } from "./features/restaurants/restaurant-list/
     HttpClientModule,
     AppRoutingModule,
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()}),
-    StoreModule.forRoot({counter: counterReducer}),
     CoreModule,
     // Material components
     MatProgressBar,

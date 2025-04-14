@@ -20,20 +20,20 @@ export class HeaderComponent {
       icon: 'pi pi-home',
       routerLink: '/'
     },
-    {
-      label: 'Restauracje',
-      icon: 'pi pi-map-marker',
-      routerLink: '/restaurants'
-    },
-    {
-      label: 'Pytania',
-      icon: 'pi pi-question-circle',
-      routerLink: '/questions'
-    },
-    {
-      label: 'O nas',
-      icon: 'pi pi-info-circle',
-      routerLink: '/about'
-    }
+    // {
+    //   label: 'Restauracje',
+    //   icon: 'pi pi-map-marker',
+    //   routerLink: '/restaurants'
+    // },
+    // {
+    //   label: 'Pytania',
+    //   icon: 'pi pi-question-circle',
+    //   routerLink: '/questions'
+    // },
+    // {
+    //   label: 'O nas',
+    //   icon: 'pi pi-info-circle',
+    //   routerLink: '/about'
+    // }
   ];
 }
