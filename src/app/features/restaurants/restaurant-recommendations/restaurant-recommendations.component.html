@@ -1,23 +1,31 @@
 <div class="recommendations-container">
   <h2>Rekomendowane restauracje</h2>
 
-  <div *ngIf="loading" class="loading">
+  @if (loading) {
+  <div class="loading">
     <p>Ładowanie rekomendacji...</p>
     <!-- Tutaj możesz dodać spinner lub inny wskaźnik ładowania -->
   </div>
+  }
 
-  <div *ngIf="error" class="error-message">
+  @if (error) {
+  <div class="error-message">
     <p>{{ error }}</p>
   </div>
+  }
 
-  <div *ngIf="!loading && !error && recommendations.length === 0" class="no-recommendations">
+  @if (!loading && !error && recommendations.length === 0) {
+  <div class="no-recommendations">
     <p>Brak rekomendacji. Odpowiedz na pytania, aby otrzymać spersonalizowane rekomendacje restauracji.</p>
   </div>
+  }
 
-  <div *ngIf="!loading && !error && recommendations.length > 0">
+  @if (!loading && !error && recommendations.length > 0) {
+  <div>
     <p class="sort-info">Restauracje posortowane według najlepszego dopasowania:</p>
     <div class="recommendations-list">
-    <div *ngFor="let recommendation of recommendations" class="recommendation-card">
+    @for (recommendation of recommendations; track recommendation.restaurant.id) {
+    <div class="recommendation-card">
       <div class="recommendation-header">
         <h3>{{ recommendation.restaurant.name }}</h3>
         <div class="match-score">
@@ -27,30 +35,39 @@
       </div>
 
       <div class="restaurant-details">
-        <div class="restaurant-image" *ngIf="recommendation.restaurant.image_url">
+        @if (recommendation.restaurant.image_url) {
+        <div class="restaurant-image">
           <img [src]="recommendation.restaurant.image_url" [alt]="recommendation.restaurant.name">
         </div>
+        }
 
         <div class="restaurant-info">
           <p class="cuisine"><strong>Kuchnia:</strong> {{ recommendation.restaurant.cuisine }}</p>
           <p class="address"><strong>Adres:</strong> {{ recommendation.restaurant.address }}, {{ recommendation.restaurant.city }}</p>
           <p class="rating"><strong>Ocena:</strong> {{ recommendation.restaurant.rating }}/5</p>
 
-          <p class="price-level" *ngIf="recommendation.restaurant.price_level">
+          @if (recommendation.restaurant.price_level) {
+          <p class="price-level">
             <strong>Poziom cenowy:</strong>
             <span class="price-indicator">
-              <span *ngFor="let i of [1,2,3,4,5]"
-                    [ngClass]="{'active': i <= recommendation.restaurant.price_level}">$</span>
+              @for (i of [1,2,3,4,5]; track i) {
+              <span [ngClass]="{'active': i <= recommendation.restaurant.price_level}">$</span>
+              }
             </span>
           </p>
+          }
 
-          <p class="description" *ngIf="recommendation.restaurant.description">
+          @if (recommendation.restaurant.description) {
+          <p class="description">
             {{ recommendation.restaurant.description }}
           </p>
+          }
 
-          <div class="tiktok-badge" *ngIf="recommendation.restaurant.is_tiktok_recommended">
+          @if (recommendation.restaurant.is_tiktok_recommended) {
+          <div class="tiktok-badge">
             <span class="tiktok-icon">🔥</span> Popularne na TikToku
           </div>
+          }
         </div>
       </div>
 
@@ -58,8 +75,10 @@
         <a [href]="recommendation.restaurant.website" target="_blank" class="website-link">Odwiedź stronę</a>
       </div>
     </div>
+    }
     </div>
   </div>
+  }
 
   <div class="actions">
     <button (click)="getRecommendations()" [disabled]="loading || userAnswers.length === 0">

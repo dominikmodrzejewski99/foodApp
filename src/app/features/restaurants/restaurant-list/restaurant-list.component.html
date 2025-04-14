@@ -1,62 +1,81 @@
 <div class="restaurant-list-container">
   <h2>Wszystkie restauracje</h2>
-  
-  <div *ngIf="loading" class="loading">
+
+  @if (loading) {
+  <div class="loading">
     <p>Ładowanie restauracji...</p>
   </div>
-  
-  <div *ngIf="error" class="error-message">
+  }
+
+  @if (error) {
+  <div class="error-message">
     <p>{{ error }}</p>
   </div>
-  
-  <div *ngIf="!loading && !error && restaurants.length === 0" class="no-restaurants">
+  }
+
+  @if (!loading && !error && restaurants.length === 0) {
+  <div class="no-restaurants">
     <p>Brak restauracji do wyświetlenia.</p>
   </div>
-  
-  <div *ngIf="!loading && !error && restaurants.length > 0" class="restaurants-grid">
-    <div *ngFor="let restaurant of restaurants" class="restaurant-card">
+  }
+
+  @if (!loading && !error && restaurants.length > 0) {
+  <div class="restaurants-grid">
+    @for (restaurant of restaurants; track restaurant.id) {
+    <div class="restaurant-card">
       <div class="restaurant-header">
         <h3>{{ restaurant.name }}</h3>
         <div class="rating">
           <span class="stars">
-            <i *ngFor="let star of [1,2,3,4,5]" 
-               class="star" 
-               [ngClass]="{'filled': star <= (restaurant.rating || 0)}">★</i>
+            @for (star of [1,2,3,4,5]; track star) {
+            <i class="star" [ngClass]="{'filled': star <= (restaurant.rating || 0)}">★</i>
+            }
           </span>
           <span class="rating-value">{{ restaurant.rating || 0 }}/5</span>
         </div>
       </div>
-      
+
       <div class="restaurant-details">
-        <div *ngIf="restaurant.image_url" class="restaurant-image">
+        @if (restaurant.image_url) {
+        <div class="restaurant-image">
           <img [src]="restaurant.image_url" [alt]="restaurant.name">
         </div>
-        
+        }
+
         <div class="restaurant-info">
           <p class="cuisine"><strong>Kuchnia:</strong> {{ restaurant.cuisine }}</p>
           <p class="address"><strong>Adres:</strong> {{ restaurant.address }}, {{ restaurant.city }}</p>
-          
-          <p *ngIf="restaurant.price_level" class="price-level">
+
+          @if (restaurant.price_level) {
+          <p class="price-level">
             <strong>Poziom cenowy:</strong>
             <span class="price-indicator">
-              <span *ngFor="let i of [1,2,3,4,5]" 
-                    [ngClass]="{'active': i <= (restaurant.price_level || 0)}">$</span>
+              @for (i of [1,2,3,4,5]; track i) {
+              <span [ngClass]="{'active': i <= (restaurant.price_level || 0)}">$</span>
+              }
             </span>
           </p>
-          
-          <p *ngIf="restaurant.description" class="description">
+          }
+
+          @if (restaurant.description) {
+          <p class="description">
             {{ restaurant.description }}
           </p>
-          
-          <div *ngIf="restaurant.is_tiktok_recommended" class="tiktok-badge">
+          }
+
+          @if (restaurant.is_tiktok_recommended) {
+          <div class="tiktok-badge">
             <span class="tiktok-icon">🔥</span> Popularne na TikToku
           </div>
+          }
         </div>
       </div>
-      
+
       <div class="restaurant-actions">
         <a [href]="restaurant.website" target="_blank" class="website-link">Odwiedź stronę</a>
       </div>
     </div>
+    }
   </div>
+  }
 </div>
