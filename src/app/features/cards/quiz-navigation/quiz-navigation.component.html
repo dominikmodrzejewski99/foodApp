@@ -1,0 +1,19 @@
+<div class="navigation-buttons">
+  <p-button
+    icon="pi pi-arrow-left"
+    [disabled]="isFirstQuestion"
+    (onClick)="onPrevious()"
+    styleClass="p-button-text p-button-secondary nav-button prev-button"
+    label="Wstecz"
+  ></p-button>
+
+  <p-button
+    [icon]="!isLastQuestion ? 'pi pi-arrow-right' : 'pi pi-check-circle'"
+    iconPos="right"
+    [disabled]="!hasSelectedAnswer"
+    (onClick)="onNext()"
+    styleClass="p-button-raised nav-button next-button"
+    [ngClass]="{'p-button-success': isLastQuestion, 'p-button-primary': !isLastQuestion}"
+    [label]="!isLastQuestion ? 'Dalej' : 'Zakończ quiz'"
+  ></p-button>
+</div>

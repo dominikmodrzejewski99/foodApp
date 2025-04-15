@@ -1,0 +1,76 @@
+<div class="question-container fade-in slide-up" *ngIf="question">
+  <p-card styleClass="question-card shadow rounded">
+    <ng-template pTemplate="header">
+      <div class="card-header-content bg-primary">
+        <h1 class="question-title">{{ question?.question_text }}</h1>
+        <div class="question-subtitle">Nie wiesz, na co masz ochotę? Wybierz opcję, która najbardziej Ci odpowiada</div>
+      </div>
+    </ng-template>
+
+    <div class="answers-section">
+      <h3 class="answers-heading">Wybierz odpowiedź:</h3>
+
+      <ng-container *ngIf="loading">
+        <app-loading-spinner message="Ładowanie odpowiedzi..."></app-loading-spinner>
+      </ng-container>
+
+      <ng-container *ngIf="error">
+        <app-error-message 
+          [message]="'Nie udało się załadować odpowiedzi.'" 
+          [showRetry]="true"
+          (retry)="retryLoading.emit()">
+        </app-error-message>
+      </ng-container>
+
+      <ng-container *ngIf="!loading && !error">
+        <div class="answer-options">
+          <ng-container *ngIf="answers.length === 0">
+            <div class="no-answers">
+              <i class="pi pi-info-circle"></i>
+              <p>Brak odpowiedzi dla tego pytania.</p>
+            </div>
+          </ng-container>
+
+          <ng-container *ngFor="let answer of answers; let i = index">
+            <div class="answer-option"
+                [class.selected]="isAnswerSelected(answer)"
+                (click)="setSelectedAnswer(answer)"
+                [style.animation-delay.ms]="i * 50"
+                [title]="isAnswerSelected(answer) ? 'Kliknij ponownie, aby odznaczyć' : ''"
+                @fadeIn>
+              <div class="answer-radio">
+                <div class="radio-outer" [class.can-unselect]="isAnswerSelected(answer)">
+                  <ng-container *ngIf="isAnswerSelected(answer)">
+                    <div class="radio-inner"></div>
+                    <i class="pi pi-times unselect-icon"></i>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="answer-content">
+                <div class="answer-text">{{ answer.answer_text }}</div>
+                <ng-container *ngIf="answer.votes">
+                  <div class="answer-meta">
+                    <span class="votes">
+                      <i class="pi pi-users"></i>
+                      {{ answer.votes }} osób wybrało tę odpowiedź
+                    </span>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="question-hint" [ngClass]="{'selected-hint': selectedAnswer}">
+      <i class="pi" [ngClass]="{'pi-info-circle': !selectedAnswer, 'pi-check-circle': selectedAnswer}"></i>
+      <ng-container *ngIf="!selectedAnswer">
+        <span>Wybierz jedną z odpowiedzi, aby kontynuować</span>
+      </ng-container>
+      <ng-container *ngIf="selectedAnswer">
+        <span>Możesz zmienić odpowiedź klikając ponownie w zaznaczoną opcję</span>
+      </ng-container>
+    </div>
+  </p-card>
+</div>

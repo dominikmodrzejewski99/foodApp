@@ -1,0 +1,8 @@
+<div class="error-message">
+  <p-card header="Błąd" styleClass="p-card-red">
+    <p>{{ message }}</p>
+    <ng-template pTemplate="footer" *ngIf="showRetry">
+      <button class="retry-button" (click)="onRetry()">Spróbuj ponownie</button>
+    </ng-template>
+  </p-card>
+</div>

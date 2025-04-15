@@ -40,12 +40,6 @@
       <p-card styleClass="question-card shadow rounded">
         <ng-template pTemplate="header">
           <div class="card-header-content bg-primary">
-            <div class="question-progress">
-              <div class="progress-text">Pytanie {{ currentQuestionIndex() + 1 }} z {{ questions().length }}</div>
-              <div class="progress-bar">
-                <div class="progress-fill" [style.width.%]="(currentQuestionIndex() + 1) / questions().length * 100"></div>
-              </div>
-            </div>
             <h1 class="question-title">{{ currentQuestion()?.question_text }}</h1>
             <div class="question-subtitle">Nie wiesz, na co masz ochotę? Wybierz opcję, która najbardziej Ci odpowiada</div>
           </div>
@@ -109,6 +103,7 @@
             </div>
             }
           </div>
+          }
         </div>
 
         <div class="navigation-buttons">
@@ -141,6 +136,7 @@
         </div>
       </p-card>
     </div>
+    }
   </div>
 
   <!-- Widok rekomendacji -->
@@ -298,4 +294,6 @@
       </div>
     </p-card>
   </div>
+  }
+  }
 </div>

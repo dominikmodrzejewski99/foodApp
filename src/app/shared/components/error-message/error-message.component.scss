@@ -1,0 +1,28 @@
+.error-message {
+  margin-bottom: 1rem;
+
+  ::ng-deep .p-card-red .p-card-header {
+    background-color: #f8d7da;
+    color: #721c24;
+    font-weight: 600;
+  }
+
+  ::ng-deep .p-card-red .p-card-content {
+    background-color: #fff5f5;
+  }
+
+  .retry-button {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #5a6268;
+    }
+  }
+}

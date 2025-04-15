@@ -1,0 +1,146 @@
+<div class="recommendations-container fade-in slide-up">
+  <p-card styleClass="recommendations-card shadow rounded">
+    <ng-template pTemplate="header">
+      <div class="card-header-content bg-secondary">
+        <div class="recommendation-icon">
+          <i class="pi pi-thumbs-up"></i>
+        </div>
+        <h1 class="recommendation-title">Najlepsze miejsca, co zjeść we Wrocławiu 2025</h1>
+        <h2 class="recommendation-subtitle">Na podstawie Twoich preferencji, polecamy te restauracje i lokale gastronomiczne:</h2>
+      </div>
+    </ng-template>
+
+    <div class="recommendations-content">
+      <!-- Ładowanie restauracji -->
+      <ng-container *ngIf="loading">
+        <app-loading-spinner message="Ładowanie rekomendacji..."></app-loading-spinner>
+      </ng-container>
+
+      <!-- Błąd ładowania restauracji -->
+      <ng-container *ngIf="error">
+        <app-error-message [message]="'Nie udało się załadować rekomendacji. Spróbuj ponownie później.'"></app-error-message>
+      </ng-container>
+
+      <!-- Brak rekomendacji -->
+      <ng-container *ngIf="!loading && !error && recommendations.length === 0">
+        <div class="no-recommendations">
+          <p-card header="Brak rekomendacji" styleClass="p-card-warning">
+            <p>Nie znaleziono restauracji pasujących do Twoich preferencji. Spróbuj zmienić swoje odpowiedzi.</p>
+          </p-card>
+        </div>
+      </ng-container>
+
+      <!-- Lista rekomendacji -->
+      <ng-container *ngIf="recommendations.length > 0">
+        <div class="restaurant-list">
+          <h2 class="seo-heading">Popularne restauracje i lokale gastronomiczne we Wrocławiu</h2>
+          <p class="seo-description">Poniżej znajdziesz najlepsze miejsca, gdzie możesz zjeść we Wrocławiu. Nasze rekomendacje są dopasowane do Twoich preferencji kulinarnych i bazują na opiniach klientów oraz jakości serwowanych dań.</p>
+          
+          <ng-container *ngFor="let recommendation of recommendations; let i = index">
+            <div class="restaurant-item"
+                 [class.top-pick]="i === 0"
+                 [style.animation-delay.ms]="i * 100"
+                 @fadeIn>
+              <ng-container *ngIf="i === 0">
+                <div class="restaurant-rank top">
+                  <div class="rank-badge">
+                    <i class="pi pi-trophy"></i>
+                    Najlepszy wybór - {{ recommendation.match_score }}% dopasowania
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="i !== 0">
+                <div class="restaurant-rank">
+                  <div class="rank-badge secondary">
+                    <i class="pi pi-check-circle"></i>
+                    {{ recommendation.match_score }}% dopasowania
+                  </div>
+                </div>
+              </ng-container>
+
+              <div class="restaurant-header">
+                <h3 class="restaurant-name">{{ recommendation.restaurant?.name || 'Restauracja' }}</h3>
+                <p>Najlepsze miejsce, co zjeść we Wrocławiu</p>
+              </div>
+
+              <div class="restaurant-details">
+                <ng-container *ngIf="recommendation.restaurant?.image_url">
+                  <div class="restaurant-image">
+                    <img [src]="recommendation.restaurant.image_url" [alt]="recommendation.restaurant?.name || 'Restauracja'">
+                  </div>
+                </ng-container>
+
+                <div class="restaurant-info">
+                  <div class="info-row cuisine">
+                    <i class="pi pi-tag"></i>
+                    <span><strong>Kuchnia:</strong> {{ recommendation.restaurant?.cuisine || 'Różnorodna' }}</span>
+                  </div>
+
+                  <div class="info-row address">
+                    <i class="pi pi-map-marker"></i>
+                    <span><strong>Adres:</strong> {{ recommendation.restaurant?.address || 'Adres' }}{{ recommendation.restaurant?.city ? ', ' + recommendation.restaurant.city : '' }}</span>
+                  </div>
+
+                  <ng-container *ngIf="recommendation.restaurant?.price_level">
+                    <div class="info-row price-level">
+                      <i class="pi pi-wallet"></i>
+                      <span>
+                        <strong>Poziom cenowy:</strong>
+                        <span class="price-indicator">
+                          <ng-container *ngFor="let i of [1,2,3,4,5]">
+                            <span [ngClass]="{'active': i <= (recommendation.restaurant?.price_level || 0)}">
+                              $
+                            </span>
+                          </ng-container>
+                        </span>
+                      </span>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="recommendation.restaurant?.description">
+                    <div class="info-row description">
+                      <i class="pi pi-info-circle"></i>
+                      <span>{{ recommendation.restaurant?.description }}</span>
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="recommendation.restaurant?.is_tiktok_recommended">
+                    <div class="tiktok-badge">
+                      <i class="pi pi-video"></i>
+                      <span>Popularne na TikToku</span>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="restaurant-actions">
+                <ng-container *ngIf="recommendation.restaurant?.website">
+                  <a [href]="recommendation.restaurant.website" target="_blank" class="action-button website-link">
+                    <i class="pi pi-external-link"></i>
+                    <span>Odwiedź stronę</span>
+                  </a>
+                </ng-container>
+                <ng-container *ngIf="recommendation.restaurant?.address && recommendation.restaurant?.city">
+                  <a class="action-button map-link" (click)="onOpenMap(recommendation.restaurant)">
+                    <i class="pi pi-map"></i>
+                    <span>Pokaż na mapie</span>
+                  </a>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <!-- Przyciski akcji -->
+      <div class="action-buttons">
+        <p-button
+          icon="pi pi-refresh"
+          (onClick)="onRestart()"
+          styleClass="p-button-raised p-button-primary restart-button"
+          label="Rozpocznij od nowa"
+        ></p-button>
+      </div>
+    </div>
+  </p-card>
+</div>
