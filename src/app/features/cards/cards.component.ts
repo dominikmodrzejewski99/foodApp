@@ -258,6 +258,7 @@ export class CardsComponent implements OnInit {
 
   // Metoda do pobierania restauracji po zakończeniu quizu
   getRecommendations(): void {
+    console.log('getRecommendations called');
     const selectedAnswers = this.selectedAnswers();
     if (selectedAnswers.length === 0) {
       console.log('No answers selected, cannot get restaurants');
@@ -267,6 +268,7 @@ export class CardsComponent implements OnInit {
     // Pokaż wyniki
     this.showResults.set(true);
     this.loading.set(true);
+    console.log('showResults in getRecommendations:', this.showResults());
 
     // Zbierz ID wybranych odpowiedzi
     const answerIds = selectedAnswers
@@ -320,7 +322,10 @@ export class CardsComponent implements OnInit {
 
         // Wypisz finalne rekomendacje
         console.log('Final recommendations:', recommendations);
+        console.log('apiRecommendations after update:', this.apiRecommendations());
+        console.log('showResults before loading set to false:', this.showResults());
         this.loading.set(false);
+        console.log('showResults after loading set to false:', this.showResults());
       },
       error: (err) => {
         console.error('Error getting matching restaurants:', err);

@@ -39,6 +39,7 @@
     font-size: 0.8rem;
     color: #6c757d;
     font-weight: 500;
+    margin-bottom: 1rem;
   }
 }
 
@@ -51,7 +52,7 @@
   overflow: visible; /* Pokaż całą zawartość */
   height: auto; /* Automatyczna wysokość */
 
-  ::ng-deep .p-card {
+  .p-card {
     display: flex;
     flex-direction: column;
     height: auto;
@@ -65,7 +66,7 @@
 
     .p-card-content {
       flex: 1;
-      overflow-y: visible; /* Bez przewijania */
+      overflow-y: visible;
       display: flex;
       flex-direction: column;
     }
