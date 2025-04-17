@@ -42,7 +42,7 @@ export class QuizQuestionComponent {
   @Output() retryLoading = new EventEmitter<void>();
 
   isAnswerSelected(answer: Answer): boolean {
-    return this.selectedAnswer?.id === answer.id;
+    return this.selectedAnswer.id === answer.id;
   }
 
   setSelectedAnswer(answer: Answer): void {

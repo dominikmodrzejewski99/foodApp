@@ -1,0 +1,133 @@
+<div class="about-container">
+  <div class="about-header">
+    <h1>O nas</h1>
+    <p class="about-subtitle">
+      Poznaj zespół stojący za aplikacją "Co zjeść?" i dowiedz się więcej o naszej misji
+    </p>
+  </div>
+
+  <div class="about-content">
+    <div class="mission-section">
+      <p-card styleClass="mission-card">
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h2>Nasza misja</h2>
+          </div>
+        </ng-template>
+        <div class="mission-content">
+          <p>
+            Naszą misją jest pomoc ludziom w odkrywaniu nowych smaków i miejsc kulinarnych.
+            Wierzymy, że dobre jedzenie łączy ludzi i kultury, a każdy posiłek może być przygodą.
+          </p>
+          <p>
+            Jako podróżnicy, odwiedziliśmy wiele miejsc na świecie i próbowaliśmy różnorodnych kuchni.
+            Teraz chcemy podzielić się naszymi doświadczeniami i pomóc Ci znaleźć najlepsze miejsca do jedzenia we Wrocławiu.
+          </p>
+          <p>
+            Aplikacja "Co zjeść?" powstała z pasji do jedzenia i podróżowania. Nasz zespół starannie wybiera i ocenia restauracje,
+            aby zapewnić Ci najlepsze rekomendacje dopasowane do Twoich preferencji.
+          </p>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="team-section">
+      <h2>Nasz zespół</h2>
+      <div class="team-members">
+        @for (member of teamMembers; track member.name) {
+          <p-card styleClass="team-card">
+            <div class="team-member">
+              <div class="member-photo">
+                <img src="{{ member.image }}" alt="{{ member.name }}" onerror="this.src='/assets/default-avatar.jpg'">
+              </div>
+              <div class="member-info">
+                <h3>{{ member.name }}</h3>
+                <p class="member-role">{{ member.role }}</p>
+                <p class="member-bio">{{ member.bio }}</p>
+                <div class="social-links">
+                  @if (member.social.tiktok) {
+                    <a href="{{ member.social.tiktok }}" target="_blank" class="social-link tiktok">
+                      <i class="pi pi-video"></i>
+                      <span>Podróże Dominikańskie na TikTok</span>
+                    </a>
+                  }
+                  @if (member.social.instagram) {
+                    <a href="{{ member.social.instagram }}" target="_blank" class="social-link instagram">
+                      <i class="pi pi-instagram"></i>
+                      <span>Instagram</span>
+                    </a>
+                  }
+                  @if (member.social.facebook) {
+                    <a href="{{ member.social.facebook }}" target="_blank" class="social-link facebook">
+                      <i class="pi pi-facebook"></i>
+                      <span>Facebook</span>
+                    </a>
+                  }
+                </div>
+              </div>
+            </div>
+          </p-card>
+        }
+      </div>
+    </div>
+
+    <div class="journey-section">
+      <p-card styleClass="journey-card">
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h2>Nasza podróż</h2>
+          </div>
+        </ng-template>
+        <div class="journey-content">
+          <p>
+            Wszystko zaczęło się od naszej pasji do podróżowania. Jako zespół Podróże Dominikańskie,
+            odwiedziliśmy wiele miejsc na świecie, poznając różne kultury i kuchnie.
+            Nasza przygoda z jedzeniem zaczęła się podczas podróży po Dominikanie,
+            gdzie odkryliśmy, jak ważne jest dobre jedzenie w poznawaniu nowych kultur.
+          </p>
+          <p>
+            Po powrocie do Polski, postanowiliśmy podzielić się naszymi doświadczeniami i stworzyć aplikację,
+            która pomoże ludziom odkrywać nowe smaki i miejsca. Tak powstała aplikacja "Co zjeść?",
+            która łączy naszą pasję do podróżowania i jedzenia.
+          </p>
+          <p>
+            Dziś, dzięki naszym podróżom i doświadczeniom kulinarnym, możemy pomóc Ci znaleźć
+            najlepsze miejsca do jedzenia we Wrocławiu, dopasowane do Twoich preferencji.
+          </p>
+        </div>
+      </p-card>
+    </div>
+
+    <div class="contact-section">
+      <p-card styleClass="contact-card">
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <h2>Skontaktuj się z nami</h2>
+          </div>
+        </ng-template>
+        <div class="contact-content">
+          <p>
+            Masz pytania, sugestie lub chcesz współpracować? Skontaktuj się z nami!
+          </p>
+          <div class="contact-info">
+            <div class="contact-item">
+              <i class="pi pi-envelope"></i>
+              <span>kontakt@cozjesc.pl</span>
+            </div>
+            <div class="contact-item">
+              <i class="pi pi-phone"></i>
+              <span>+48 123 456 789</span>
+            </div>
+            <div class="contact-item">
+              <i class="pi pi-map-marker"></i>
+              <span>ul. Smaczna 123, Wrocław</span>
+            </div>
+          </div>
+          <div class="contact-buttons">
+            <p-button label="Wyślij wiadomość" icon="pi pi-envelope" styleClass="p-button-primary"></p-button>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </div>
+</div>
