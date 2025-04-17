@@ -1,0 +1,62 @@
+<div class="faq-container">
+  <div class="faq-header">
+    <h1>Najczęściej zadawane pytania</h1>
+    <p class="faq-description">
+      Znajdź odpowiedzi na najczęściej zadawane pytania dotyczące naszej aplikacji do sugerowania restauracji.
+      Jeśli nie znajdziesz odpowiedzi na swoje pytanie, skontaktuj się z nami poprzez formularz kontaktowy.
+    </p>
+  </div>
+
+  <div class="faq-content">
+    @for (category of categories; track category) {
+      <div class="faq-category">
+        <h2>{{ category }}</h2>
+        <p-accordion [multiple]="true" styleClass="faq-accordion">
+          @for (item of groupedFaqItems[category]; track item.question) {
+            <p-accordionTab header="{{ item.question }}">
+              <p>{{ item.answer }}</p>
+            </p-accordionTab>
+          }
+        </p-accordion>
+      </div>
+    }
+  </div>
+
+  <div class="faq-additional-info">
+    <p-card styleClass="info-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <h3>Masz więcej pytań?</h3>
+        </div>
+      </ng-template>
+      <div class="card-content">
+        <p>
+          Jeśli nie znalazłeś odpowiedzi na swoje pytanie, możesz skontaktować się z naszym zespołem wsparcia.
+          Odpowiemy na Twoje pytanie najszybciej jak to możliwe.
+        </p>
+        <div class="contact-buttons">
+          <p-button label="Formularz kontaktowy" icon="pi pi-envelope" styleClass="p-button-primary"></p-button>
+          <p-button label="Czat wsparcia" icon="pi pi-comments" styleClass="p-button-secondary"></p-button>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <div class="faq-quick-links">
+    <h3>Przydatne linki</h3>
+    <div class="links-container">
+      <a routerLink="/" class="quick-link">
+        <i class="pi pi-home"></i>
+        <span>Strona główna</span>
+      </a>
+      <a routerLink="/restaurants" class="quick-link">
+        <i class="pi pi-map-marker"></i>
+        <span>Przeglądaj restauracje</span>
+      </a>
+      <a routerLink="/about" class="quick-link">
+        <i class="pi pi-info-circle"></i>
+        <span>O aplikacji</span>
+      </a>
+    </div>
+  </div>
+</div>

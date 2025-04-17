@@ -185,7 +185,7 @@
         <div class="restaurant-list">
           <h2 class="seo-heading">Popularne restauracje i lokale gastronomiczne we Wrocławiu</h2>
           <p class="seo-description">Poniżej znajdziesz najlepsze miejsca, gdzie możesz zjeść we Wrocławiu. Nasze rekomendacje są dopasowane do Twoich preferencji kulinarnych i bazują na opiniach klientów oraz jakości serwowanych dań.</p>
-          @for (recommendation of apiRecommendations(); track recommendation.restaurant?.id; let i = $index) {
+          @for (recommendation of apiRecommendations(); track recommendation.restaurant.id; let i = $index) {
           <div class="restaurant-item"
                [class.top-pick]="i === 0"
                [style.animation-delay.ms]="i * 100"
@@ -207,36 +207,36 @@
             }
 
             <div class="restaurant-header">
-              <h3 class="restaurant-name">{{ recommendation.restaurant?.name || 'Restauracja' }}</h3>
+              <h3 class="restaurant-name">{{ recommendation.restaurant.name || 'Restauracja' }}</h3>
               <p>Najlepsze miejsce, co zjeść we Wrocławiu</p>
             </div>
 
             <div class="restaurant-details">
-              @if (recommendation.restaurant?.image_url) {
+              @if (recommendation.restaurant.image_url) {
               <div class="restaurant-image">
-                <img [src]="recommendation.restaurant.image_url" [alt]="recommendation.restaurant?.name || 'Restauracja'">
+                <img [src]="recommendation.restaurant.image_url" [alt]="recommendation.restaurant.name || 'Restauracja'">
               </div>
               }
 
               <div class="restaurant-info">
                 <div class="info-row cuisine">
                   <i class="pi pi-tag"></i>
-                  <span><strong>Kuchnia:</strong> {{ recommendation.restaurant?.cuisine || 'Różnorodna' }}</span>
+                  <span><strong>Kuchnia:</strong> {{ recommendation.restaurant.cuisine || 'Różnorodna' }}</span>
                 </div>
 
                 <div class="info-row address">
                   <i class="pi pi-map-marker"></i>
-                  <span><strong>Adres:</strong> {{ recommendation.restaurant?.address || 'Adres' }}{{ recommendation.restaurant?.city ? ', ' + recommendation.restaurant.city : '' }}</span>
+                  <span><strong>Adres:</strong> {{ recommendation.restaurant.address || 'Adres' }}{{ recommendation.restaurant.city ? ', ' + recommendation.restaurant.city : '' }}</span>
                 </div>
 
-                @if (recommendation.restaurant?.price_level) {
+                @if (recommendation.restaurant.price_level) {
                 <div class="info-row price-level">
                   <i class="pi pi-wallet"></i>
                   <span>
                     <strong>Poziom cenowy:</strong>
                     <span class="price-indicator">
                       @for (i of [1,2,3,4,5]; track i) {
-                      <span [ngClass]="{'active': i <= (recommendation.restaurant?.price_level || 0)}">
+                      <span [ngClass]="{'active': i <= (recommendation.restaurant.price_level || 0)}">
                         $
                       </span>
                       }
@@ -245,30 +245,23 @@
                 </div>
                 }
 
-                @if (recommendation.restaurant?.description) {
+                @if (recommendation.restaurant.description) {
                 <div class="info-row description">
                   <i class="pi pi-info-circle"></i>
-                  <span>{{ recommendation.restaurant?.description }}</span>
-                </div>
-                }
-
-                @if (recommendation.restaurant?.is_tiktok_recommended) {
-                <div class="tiktok-badge">
-                  <i class="pi pi-video"></i>
-                  <span>Popularne na TikToku</span>
+                  <span>{{ recommendation.restaurant.description }}</span>
                 </div>
                 }
               </div>
             </div>
 
             <div class="restaurant-actions">
-              @if (recommendation.restaurant?.website) {
+              @if (recommendation.restaurant.website) {
               <a [href]="recommendation.restaurant.website" target="_blank" class="action-button website-link">
                 <i class="pi pi-external-link"></i>
                 <span>Odwiedź stronę</span>
               </a>
               }
-              @if (recommendation.restaurant?.address && recommendation.restaurant?.city) {
+              @if (recommendation.restaurant.address && recommendation.restaurant.city) {
               <a class="action-button map-link" (click)="openMap(recommendation.restaurant)">
                 <i class="pi pi-map"></i>
                 <span>Pokaż na mapie</span>
@@ -280,8 +273,6 @@
           }
         </div>
         }
-
-        <!-- Przyciski akcji -->
         <div class="action-buttons">
 
           <p-button

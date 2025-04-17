@@ -28,6 +28,13 @@ import { TableModule } from "primeng/table";
 import { CardsComponent } from "./features/cards/cards.component";
 import { RestaurantRecommendationsComponent } from "./features/restaurants/restaurant-recommendations/restaurant-recommendations.component";
 import { RestaurantListComponent } from "./features/restaurants/restaurant-list/restaurant-list.component";
+import { FaqComponent } from "./features/faq/faq.component";
+import { AboutComponent } from "./features/about/about.component";
+
+// PrimeNG components
+import { AccordionModule } from 'primeng/accordion';
+import { CardModule } from 'primeng/card';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
   declarations: [
@@ -52,10 +59,15 @@ import { RestaurantListComponent } from "./features/restaurants/restaurant-list/
     // PrimeNG components
     ButtonModule,
     TableModule,
+    AccordionModule,
+    CardModule,
+    DividerModule,
     // Standalone components
     CardsComponent,
     RestaurantListComponent,
-    RestaurantRecommendationsComponent
+    RestaurantRecommendationsComponent,
+    FaqComponent,
+    AboutComponent
   ],
   providers: [
     provideHttpClient(),
